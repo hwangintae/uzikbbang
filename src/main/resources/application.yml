@@ -3,7 +3,8 @@ spring:
         url: jdbc:h2:tcp://localhost/~/db_khpl_uzikbbang
         driver-class-name: org.h2.Driver
         username: sa
+        password:
     jpa:
         show-sql: true
         hibernate:
-            ddl-auto: none
+            ddl-auto: create
