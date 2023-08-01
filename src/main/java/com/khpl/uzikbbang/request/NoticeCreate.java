@@ -1,4 +1,4 @@
-package com.request;
+package com.khpl.uzikbbang.request;
 
 import lombok.Builder;
 import lombok.Getter;

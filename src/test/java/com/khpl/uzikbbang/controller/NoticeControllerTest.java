@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.khpl.uzikbbang.domain.Notice;
 import com.khpl.uzikbbang.repository.NoticeRepository;
-import com.request.NoticeCreate;
+import com.khpl.uzikbbang.request.NoticeCreate;
 
 @SpringBootTest
 @AutoConfigureMockMvc

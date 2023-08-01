@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.khpl.uzikbbang.domain.Notice;
 import com.khpl.uzikbbang.repository.NoticeRepository;
+import com.khpl.uzikbbang.request.NoticeCreate;
+import com.khpl.uzikbbang.request.Page;
 import com.khpl.uzikbbang.response.NoticeResponse;
-import com.request.NoticeCreate;
-import com.request.Page;
 
 import lombok.RequiredArgsConstructor;
 

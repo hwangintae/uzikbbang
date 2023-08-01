@@ -1,4 +1,4 @@
-package com.request;
+package com.khpl.uzikbbang.request;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;

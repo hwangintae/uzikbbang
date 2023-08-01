@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.khpl.uzikbbang.request.NoticeCreate;
+import com.khpl.uzikbbang.request.Page;
 import com.khpl.uzikbbang.response.NoticeResponse;
 import com.khpl.uzikbbang.service.NoticeService;
-import com.request.NoticeCreate;
-import com.request.Page;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,17 +1,19 @@
-package com.khpl.uzikbbang.domain;
+package com.khpl.uzikbbang.request;
 
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@Entity
-public class Product {
+@Setter
+@NoArgsConstructor
+public class ProductCreate {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +30,6 @@ public class Product {
     private int cost;
 
     private int price;
-    
-    private int profit;
 
     private Double wight;
     private Double calories;
@@ -45,6 +45,4 @@ public class Product {
     private List<String> ingredients;
 
     private List<String> allergies;
-
-    private boolean useAt;
 }
