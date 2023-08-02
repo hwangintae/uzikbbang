@@ -9,34 +9,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.khpl.uzikbbang.request.NoticeCreate;
 import com.khpl.uzikbbang.request.Page;
-import com.khpl.uzikbbang.response.NoticeResponse;
-import com.khpl.uzikbbang.service.NoticeService;
+import com.khpl.uzikbbang.request.ProductCreate;
+import com.khpl.uzikbbang.response.ProductResponse;
+import com.khpl.uzikbbang.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
-
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/product")
 @RequiredArgsConstructor
-public class NoticeController {
+public class ProductController {
 
-    private final NoticeService noticeService;
-
-    @GetMapping("/ping")
-    public String pingPong() {
-        return "pong";
-    }
-
+    private final ProductService productService;
+    
     @PostMapping(value="")
-    public void post(@RequestBody NoticeCreate request) {
-        noticeService.write(request);
+    public void post(@RequestBody ProductCreate request) {
+        productService.add(request);
     }
 
     @GetMapping(value="/list")
-    public List<NoticeResponse> getNoticeList(@ModelAttribute Page page) {
-        return noticeService.getList(page);
+    public List<ProductResponse> getNoticeList(@ModelAttribute Page page) {
+        return productService.getList(page);
     }
-    
 }

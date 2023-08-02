@@ -2,6 +2,8 @@ package com.khpl.uzikbbang.controller;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -56,8 +57,8 @@ public class NoticeControllerTest {
         String jsonStr = objectMapper.writeValueAsString(request);
 
         // when
-        mockMvc.perform(MockMvcRequestBuilders.post("/notice")
-                        .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/notice")
+                        .contentType(APPLICATION_JSON)
                         .content(jsonStr))
                     .andExpect(status().isOk())
                     .andDo(print());
@@ -85,7 +86,7 @@ public class NoticeControllerTest {
 
         // expected
         mockMvc.perform(MockMvcRequestBuilders.get("/notice/list?page=0&size=10")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(APPLICATION_JSON))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.length()", is(10)))
                         .andExpect(jsonPath("$[0].title").value("타이틀19"))
