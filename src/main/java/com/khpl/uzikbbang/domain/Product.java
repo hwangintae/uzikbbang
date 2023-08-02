@@ -42,9 +42,9 @@ public class Product {
     private Double cholesterol;
     private Double protein;
 
-    private List<String> ingredients;
+    private String ingredients;
 
-    private List<String> allergies;
+    private String allergies;
 
     private boolean useAt;
 }
