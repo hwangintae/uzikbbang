@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +39,11 @@ public class NoticeController {
     @GetMapping(value="/list")
     public List<NoticeResponse> getNoticeList(@ModelAttribute Page page) {
         return noticeService.getList(page);
+    }
+
+    @PatchMapping(value = "/{noticeId}")
+    public void path(@PathVariable Long noticeId) {
+        noticeService.
     }
     
 }
