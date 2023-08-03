@@ -3,7 +3,8 @@ package com.khpl.uzikbbang.service;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
-import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
@@ -38,9 +39,10 @@ public class NoticeService {
                                 .collect(toList());
     }
 
+    @Transactional
     public void edit(Long noticeId, NoticeEdit noticeEdit) {
         Notice notice = noticeRepository.findById(noticeId).get();
 
-        
+        notice.edit(noticeEdit);
     }
 }

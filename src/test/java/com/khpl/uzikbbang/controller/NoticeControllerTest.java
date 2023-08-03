@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.khpl.uzikbbang.domain.Notice;
 import com.khpl.uzikbbang.repository.NoticeRepository;
 import com.khpl.uzikbbang.request.NoticeCreate;
+import com.khpl.uzikbbang.request.NoticeEdit;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -93,4 +94,31 @@ public class NoticeControllerTest {
                         .andExpect(jsonPath("$[0].content").value("콘텐츠19"))
                         .andDo(print());
     }
+
+    @Test
+    @DisplayName("/notice/{noticeId} 수정")
+    void testPatch() throws Exception {
+
+        // given
+        Notice notice = Notice.builder()
+                .title("타이틀")
+                .content("콘텐츠 수정 전")
+            .build();
+
+        noticeRepository.save(notice);
+
+        NoticeEdit noticeEdit = NoticeEdit.builder()
+                    .title("타이틀 수정")
+                    .content("황인태")
+                .build();
+
+        String jsonStr = objectMapper.writeValueAsString(noticeEdit);
+
+        // expected
+        mockMvc.perform(MockMvcRequestBuilders.patch("/notice/1")
+                        .contentType(APPLICATION_JSON)
+                        .content(jsonStr))
+                        .andExpect(status().isOk());
+    }
+
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.khpl.uzikbbang.request.NoticeCreate;
+import com.khpl.uzikbbang.request.NoticeEdit;
 import com.khpl.uzikbbang.request.Page;
 import com.khpl.uzikbbang.response.NoticeResponse;
 import com.khpl.uzikbbang.service.NoticeService;
@@ -42,8 +43,8 @@ public class NoticeController {
     }
 
     @PatchMapping(value = "/{noticeId}")
-    public void path(@PathVariable Long noticeId) {
-        noticeService.
+    public void patch(@PathVariable Long noticeId, @RequestBody NoticeEdit noticeEdit) {
+        noticeService.edit(noticeId, noticeEdit);
     }
     
 }
