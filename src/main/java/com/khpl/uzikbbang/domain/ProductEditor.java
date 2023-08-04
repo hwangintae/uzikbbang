@@ -1,16 +1,10 @@
-package com.khpl.uzikbbang.request;
-
-import java.util.List;
+package com.khpl.uzikbbang.domain;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
-@NoArgsConstructor
-public class ProductCreate {
+public class ProductEditor {
     private String name;
     private String kind;
     private String addr;
@@ -26,11 +20,12 @@ public class ProductCreate {
     private Double saturatedFat;
     private Double cholesterol;
     private Double protein;
-    private List<String> ingredients;
-    private List<String> allergies;
+    private String ingredients;
+    private String allergies;
+    private boolean useAt;
 
     @Builder
-    public ProductCreate(String name, String kind, String addr, int exprirationDate, int cost, Double wight, Double calories, Double sodium, Double totalCarbo, Double sugars, Double totalFat, Double transFat, Double saturatedFat, Double cholesterol, Double protein, List<String> ingredients, List<String> allergies) {
+    public ProductEditor(String name, String kind, String addr, int exprirationDate, int cost, Double wight, Double calories, Double sodium, Double totalCarbo, Double sugars, Double totalFat, Double transFat, Double saturatedFat, Double cholesterol, Double protein, String ingredients, String allergies, Boolean useAt) {
         this.name = name;
         this.kind = kind;
         this.addr = addr;
@@ -46,7 +41,8 @@ public class ProductCreate {
         this.saturatedFat = saturatedFat;
         this.cholesterol = cholesterol;
         this.protein = protein;
-        this.ingredients = ingredients;
-        this.allergies = allergies;
+        this.ingredients = allergies;
+        this.allergies = ingredients;
+        this.useAt = useAt;
     }
 }
