@@ -9,6 +9,8 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.khpl.uzikbbang.domain.Notice;
+import com.khpl.uzikbbang.domain.NoticeEditor;
+import com.khpl.uzikbbang.domain.NoticeEditor.NoticeEditorBuilder;
 import com.khpl.uzikbbang.repository.NoticeRepository;
 import com.khpl.uzikbbang.request.NoticeCreate;
 import com.khpl.uzikbbang.request.NoticeEdit;
@@ -43,6 +45,13 @@ public class NoticeService {
     public void edit(Long noticeId, NoticeEdit noticeEdit) {
         Notice notice = noticeRepository.findById(noticeId).get();
 
-        notice.edit(noticeEdit);
+        NoticeEditorBuilder editor = notice.toEditor();
+
+        NoticeEditor noticeEditor = editor
+            .title(noticeEdit.getTitle())
+            .content(noticeEdit.getContent())
+            .build();
+            
+        notice.edit(noticeEditor);
     }
 }

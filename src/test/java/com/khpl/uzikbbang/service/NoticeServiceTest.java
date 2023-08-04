@@ -2,8 +2,6 @@ package com.khpl.uzikbbang.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

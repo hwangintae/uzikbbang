@@ -6,8 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
-import com.khpl.uzikbbang.request.NoticeEdit;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,9 +31,15 @@ public class Notice {
         this.content = content;
     }
 
-    public void edit(NoticeEdit noticeEdit) {
-        this.title = noticeEdit.getTitle();
-        this.content = noticeEdit.getContent();
+    public NoticeEditor.NoticeEditorBuilder toEditor() {
+        return NoticeEditor.builder()
+            .title(title)
+            .content(content);
+    }
+
+    public void edit(NoticeEditor noticeEditor) {
+        this.title = noticeEditor.getTitle();
+        this.content = noticeEditor.getContent();
     }
 
 }
