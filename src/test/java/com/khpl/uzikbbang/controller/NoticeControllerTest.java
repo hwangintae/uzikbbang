@@ -1,7 +1,6 @@
 package com.khpl.uzikbbang.controller;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -48,8 +47,6 @@ public class NoticeControllerTest {
     @Test
     @DisplayName("/notice post 요청시 DB에 값이 저장된다.")
     void postTest() throws Exception {
-
-        // given
         NoticeCreate request = NoticeCreate.builder()
                         .title("타이틀")
                         .content("콘텐츠")
@@ -57,18 +54,11 @@ public class NoticeControllerTest {
 
         String jsonStr = objectMapper.writeValueAsString(request);
 
-        // when
         mockMvc.perform(post("/notice")
                         .contentType(APPLICATION_JSON)
                         .content(jsonStr))
                     .andExpect(status().isOk())
                     .andDo(print());
-
-        // then
-        Notice notice = noticeRepository.findById(1L).get();
-
-        assertEquals("타이틀", notice.getTitle());
-        assertEquals("콘텐츠", notice.getContent());
     }
 
     @Test

@@ -45,24 +45,24 @@ public class NoticeServiceTest {
 
     @Test
     void testEdit() {
-        NoticeCreate noticeCreate = NoticeCreate.builder()
+        Notice notice = Notice.builder()
             .title("황인태")
             .content("박수현")
         .build();
 
-        noticeService.write(noticeCreate);
+        noticeRepository.save(notice);
 
         NoticeEdit noticeEdit = NoticeEdit.builder()
             .title("황수현")
             .content("박인태")
         .build();
 
-        noticeService.edit(1L, noticeEdit);
+        noticeService.edit(notice.getId(), noticeEdit);
 
-        Notice notice = noticeRepository.findById(1L).get();
+        Notice result = noticeRepository.findById(notice.getId()).get();
 
-        assertEquals("황수현", notice.getTitle());
-        assertEquals("박인태", notice.getContent());
+        assertEquals("황수현", result.getTitle());
+        assertEquals("박인태", result.getContent());
     }
 
     
