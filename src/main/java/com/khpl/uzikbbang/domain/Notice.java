@@ -33,13 +33,13 @@ public class Notice {
 
     public NoticeEditor.NoticeEditorBuilder toEditor() {
         return NoticeEditor.builder()
-            .title(title)
-            .content(content);
+            .title(this.title)
+            .content(this.content);
     }
 
-    public void edit(NoticeEditor noticeEditor) {
-        this.title = noticeEditor.getTitle();
-        this.content = noticeEditor.getContent();
+    public void edit(NoticeEditor editor) {
+        this.title = editor.getTitle();
+        this.content = editor.getContent();
     }
 
 }

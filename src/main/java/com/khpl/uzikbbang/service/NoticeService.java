@@ -42,16 +42,16 @@ public class NoticeService {
     }
 
     @Transactional
-    public void edit(Long noticeId, NoticeEdit noticeEdit) {
+    public void edit(Long noticeId, NoticeEdit edit) {
         Notice notice = noticeRepository.findById(noticeId).get();
 
-        NoticeEditorBuilder editor = notice.toEditor();
+        NoticeEditorBuilder builder = notice.toEditor();
 
-        NoticeEditor noticeEditor = editor
-            .title(noticeEdit.getTitle())
-            .content(noticeEdit.getContent())
+        NoticeEditor editor = builder
+            .title(edit.getTitle())
+            .content(edit.getContent())
             .build();
             
-        notice.edit(noticeEditor);
+        notice.edit(editor);
     }
 }
