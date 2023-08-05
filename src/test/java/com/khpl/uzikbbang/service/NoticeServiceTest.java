@@ -1,6 +1,10 @@
 package com.khpl.uzikbbang.service;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,6 +48,7 @@ public class NoticeServiceTest {
     }
 
     @Test
+    @DisplayName("notice 수정 테스트")
     void testEdit() {
         Notice notice = Notice.builder()
             .title("황인태")
@@ -63,6 +68,29 @@ public class NoticeServiceTest {
 
         assertEquals("황수현", result.getTitle());
         assertEquals("박인태", result.getContent());
+    }
+
+    @Test
+    @DisplayName("notice 삭제 테스트")
+    void testDelete() {
+
+        List<Notice> notices = IntStream.range(0, 2)
+            .mapToObj(i ->  Notice.builder()
+                            .title("삭제" + i)
+                            .content("테스트" + i)
+                        .build())
+            .collect(toList());
+
+        noticeRepository.saveAll(notices);
+
+        noticeService.delete(notices.get(0).getId());
+
+        List<Notice> result = noticeRepository.findAll();
+
+        assertEquals(1, result.size());
+        assertEquals("삭제1", result.get(0).getTitle());
+        assertEquals("테스트1", result.get(0).getContent());
+        
     }
 
     

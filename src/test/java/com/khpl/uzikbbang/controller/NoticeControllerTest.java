@@ -111,4 +111,22 @@ public class NoticeControllerTest {
                         .andExpect(status().isOk());
     }
 
+    @Test
+    @DisplayName("/notice/{noticeId} 삭제")
+    void testDelete() throws Exception {
+
+        // given
+        Notice notice = Notice.builder()
+                .title("타이틀")
+                .content("콘텐츠 수정 전")
+            .build();
+
+        noticeRepository.save(notice);
+
+        // expected
+        mockMvc.perform(MockMvcRequestBuilders.delete("/notice/" + notice.getId())
+                        .contentType(APPLICATION_JSON))
+                        .andExpect(status().isOk());
+    }
+
 }

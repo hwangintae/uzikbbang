@@ -2,6 +2,7 @@ package com.khpl.uzikbbang.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,11 +28,6 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
-    @GetMapping("/ping")
-    public String pingPong() {
-        return "pong";
-    }
-
     @PostMapping(value="")
     public void post(@RequestBody NoticeCreate request) {
         noticeService.write(request);
@@ -47,4 +43,8 @@ public class NoticeController {
         noticeService.edit(noticeId, noticeEdit);
     }
     
+    @DeleteMapping(value = "/{noticeId}")
+    public void delete(@PathVariable Long noticeId) {
+        noticeService.delete(noticeId);
+    }
 }

@@ -54,4 +54,8 @@ public class NoticeService {
             
         notice.edit(editor);
     }
+
+    public void delete(Long noticeId) {
+        noticeRepository.deleteById(noticeId);
+    }
 }

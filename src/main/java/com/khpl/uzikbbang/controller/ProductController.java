@@ -40,4 +40,6 @@ public class ProductController {
     public void edit(@PathVariable Long productId, @RequestBody ProductEdit productEdit) {
         productService.edit(productId, productEdit);
     }
+
+    
 }
