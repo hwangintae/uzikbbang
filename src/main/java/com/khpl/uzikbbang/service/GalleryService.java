@@ -13,7 +13,7 @@ import com.khpl.uzikbbang.domain.GalleryEditor;
 import com.khpl.uzikbbang.domain.GalleryEditor.GalleryEditorBuilder;
 import com.khpl.uzikbbang.repository.GalleryRepository;
 import com.khpl.uzikbbang.request.GalleryCreate;
-import com.khpl.uzikbbang.request.NoticeEdit;
+import com.khpl.uzikbbang.request.GalleryEdit;
 import com.khpl.uzikbbang.request.Page;
 import com.khpl.uzikbbang.response.GalleryResponse;
 
@@ -42,8 +42,8 @@ public class GalleryService {
     }
 
     @Transactional
-    public void edit(Long noticeId, NoticeEdit edit) {
-        Gallery gallery = galleryRepository.findById(noticeId).get();
+    public void edit(Long id, GalleryEdit edit) {
+        Gallery gallery = galleryRepository.findById(id).get();
 
         GalleryEditorBuilder builder = gallery.toEditor();
 
@@ -55,7 +55,7 @@ public class GalleryService {
         gallery.edit(editor);
     }
 
-    public void delete(Long noticeId) {
-        galleryRepository.deleteById(noticeId);
+    public void delete(Long id) {
+        galleryRepository.deleteById(id);
     }
 }
