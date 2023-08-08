@@ -21,7 +21,7 @@ import com.khpl.uzikbbang.service.GalleryService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/gallery")
 @RequiredArgsConstructor
 public class GalleryController {
 
