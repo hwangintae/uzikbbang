@@ -20,6 +20,6 @@ public class Cart {
     // @OneToOne
     // private User user;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "cart")
     private List<CartItem> cartItems;
 }

@@ -23,11 +23,11 @@ public class CartItem {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "productId")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "cartId")
     private Cart cart;
 
     private int cnt;
