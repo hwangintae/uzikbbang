@@ -17,9 +17,17 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @OneToOne
-    // private User user;
-
     @OneToMany(mappedBy = "cart")
     private List<CartItem> cartItems;
+
+    public CartItem addCartItem(Product product) {
+        CartItem cartItem = CartItem.builder()
+            .product(product)
+            .cart(this)
+        .build();
+
+        cartItems.add(cartItem);
+
+        return cartItem;
+    }
 }

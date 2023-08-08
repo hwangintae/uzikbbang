@@ -9,10 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
@@ -23,11 +23,9 @@ public class CartItem {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "productId")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "cartId")
     private Cart cart;
 
     private int cnt;
@@ -40,9 +38,12 @@ public class CartItem {
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate updtDt;
 
-    @PrePersist
-    public void initEntity() {
-        this.registDt = LocalDate.now();
+    @Builder
+    public CartItem(Product product, Cart cart) {
+        this.product = product;
+        this.cart = cart;
+        this.cnt = 1;
         this.useAt = true;
+        this.registDt = LocalDate.now();
     }
 }
