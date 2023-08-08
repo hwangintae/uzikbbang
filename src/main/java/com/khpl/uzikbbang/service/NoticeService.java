@@ -42,8 +42,8 @@ public class NoticeService {
     }
 
     @Transactional
-    public void edit(Long noticeId, NoticeEdit edit) {
-        Notice notice = noticeRepository.findById(noticeId).get();
+    public void edit(Long id, NoticeEdit edit) {
+        Notice notice = noticeRepository.findById(id).get();
 
         NoticeEditorBuilder builder = notice.toEditor();
 
@@ -55,7 +55,7 @@ public class NoticeService {
         notice.edit(editor);
     }
 
-    public void delete(Long noticeId) {
-        noticeRepository.deleteById(noticeId);
+    public void delete(Long id) {
+        noticeRepository.deleteById(id);
     }
 }

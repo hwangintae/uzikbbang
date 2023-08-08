@@ -38,13 +38,13 @@ public class NoticeController {
         return noticeService.getList(page);
     }
 
-    @PatchMapping(value = "/{noticeId}")
-    public void patch(@PathVariable Long noticeId, @RequestBody NoticeEdit noticeEdit) {
-        noticeService.edit(noticeId, noticeEdit);
+    @PatchMapping(value = "/{id}")
+    public void patch(@PathVariable Long id, @RequestBody NoticeEdit noticeEdit) {
+        noticeService.edit(id, noticeEdit);
     }
     
-    @DeleteMapping(value = "/{noticeId}")
-    public void delete(@PathVariable Long noticeId) {
-        noticeService.delete(noticeId);
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable Long id) {
+        noticeService.delete(id);
     }
 }

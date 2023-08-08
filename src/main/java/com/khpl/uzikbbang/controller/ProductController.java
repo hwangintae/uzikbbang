@@ -36,9 +36,9 @@ public class ProductController {
         return productService.getList(page);
     }
 
-    @PatchMapping(value = "/{productId}")
-    public void edit(@PathVariable Long productId, @RequestBody ProductEdit productEdit) {
-        productService.edit(productId, productEdit);
+    @PatchMapping(value = "/{id}")
+    public void edit(@PathVariable Long id, @RequestBody ProductEdit edit) {
+        productService.edit(id, edit);
     }
 
     
