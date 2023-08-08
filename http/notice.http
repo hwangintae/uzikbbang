@@ -1,0 +1,10 @@
+### notice 등록 테스트
+POST http://localhost:8080/notice
+Content-Type: application/json
+
+{
+    "title" : "테스트",
+    "content" : "REST CLIENT 테스트"
+}
+
+###
