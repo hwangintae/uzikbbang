@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class UzikUser {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,9 +32,9 @@ public class UzikUser {
 
     @Builder
     public UzikUser(String name, String email, String passWord) {
-        this.name = passWord;
+        this.name = name;
         this.email = email;
-        this.passWord = name;
+        this.passWord = passWord;
         this.registDt = LocalDateTime.now();
     }
 }
