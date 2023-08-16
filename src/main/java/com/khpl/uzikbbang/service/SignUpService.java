@@ -2,6 +2,8 @@ package com.khpl.uzikbbang.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.khpl.uzikbbang.domain.UzikUser;
@@ -14,14 +16,15 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class SignUpService {
     private final UserRepository userRepository;
 
     public List<UzikUser> getList(Page page) {
         return userRepository.getList(page);
     }
 
-    public void save(SignUp signUp) {
+    @Transactional
+    public UzikUser save(SignUp signUp) {
         String email = signUp.getEmail();
 
         // 이메일 중복 체크
@@ -39,6 +42,9 @@ public class UserService {
             .email(email)
             .passWord(passWord)
         .build();
+        
         userRepository.save(user);
+
+        return user;
     }
 }
