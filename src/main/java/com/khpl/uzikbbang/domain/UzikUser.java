@@ -1,12 +1,15 @@
 package com.khpl.uzikbbang.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -25,8 +28,8 @@ public class UzikUser {
     private String email;
     private String passWord;
 
-    @OneToOne
-    private Cart cart;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<CartItem> cartItems = new ArrayList<>();
 
     private LocalDateTime registDt;
 
@@ -37,4 +40,5 @@ public class UzikUser {
         this.passWord = passWord;
         this.registDt = LocalDateTime.now();
     }
+
 }

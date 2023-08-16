@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -13,19 +14,22 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @ManyToOne
+    private UzikUser user;
 
     @OneToOne
+    @JoinColumn(name = "product_id")
     private Product product;
-
-    @ManyToOne
-    private Cart cart;
 
     private int cnt;
 
@@ -38,11 +42,23 @@ public class CartItem {
     private LocalDate updtDt;
 
     @Builder
-    public CartItem(Product product, Cart cart) {
+    public CartItem(UzikUser user, Product product) {
+        this.user = user;
         this.product = product;
-        this.cart = cart;
         this.cnt = 1;
         this.useAt = true;
         this.registDt = LocalDate.now();
+    }
+
+    public void addCnt() {
+        this.cnt += 1;
+        this.updtDt = LocalDate.now();
+    }
+
+    public void subCnt() {
+        this.cnt -= 1;
+        this.updtDt = LocalDate.now();
+
+        if (this.cnt < 1) this.cnt = 1;
     }
 }
