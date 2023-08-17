@@ -31,6 +31,9 @@ public class UzikUser {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<CartItem> cartItems = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Session> sessions = new ArrayList<>();
+
     private LocalDateTime registDt;
 
     @Builder
@@ -39,6 +42,16 @@ public class UzikUser {
         this.email = email;
         this.passWord = passWord;
         this.registDt = LocalDateTime.now();
+    }
+
+    public Session addSession() {
+        Session session = Session.builder()
+            .user(this)
+        .build();
+
+        sessions.add(session);
+
+        return session;
     }
 
 }

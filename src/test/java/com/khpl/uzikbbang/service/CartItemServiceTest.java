@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,18 +20,18 @@ import com.khpl.uzikbbang.request.SignUp;
 
 @SpringBootTest
 public class CartItemServiceTest {
-    @Autowired
-    private SignUpService signUpService;
     
     @Autowired
     private UserRepository userRepository;
     
-
     @Autowired
     private ProductRepository productRepository;
 
     @Autowired
     private CartItemService cartItemService;
+
+    @Autowired
+    private AuthService authService;
 
     @BeforeEach
     void clean() {
@@ -38,6 +39,7 @@ public class CartItemServiceTest {
     }
 
     @Test
+    @DisplayName("장바구니에 물건 추가")
     void testAddItem() {
         SignUp signUp = SignUp.builder()
             .name("황인태")
@@ -45,7 +47,7 @@ public class CartItemServiceTest {
             .passWord("1234")
         .build();
 
-        UzikUser user = signUpService.save(signUp);
+        UzikUser user = authService.signUp(signUp);
 
         List<String> ingredients = new ArrayList<>();
         List<String> allergies = new ArrayList<>();
