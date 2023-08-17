@@ -6,25 +6,27 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.khpl.uzikbbang.domain.Session;
 import com.khpl.uzikbbang.domain.UzikUser;
 import com.khpl.uzikbbang.exception.AlreadySignUpEmailException;
+import com.khpl.uzikbbang.exception.InvalidSignInException;
 import com.khpl.uzikbbang.repository.UserRepository;
 import com.khpl.uzikbbang.request.Page;
+import com.khpl.uzikbbang.request.SignIn;
 import com.khpl.uzikbbang.request.SignUp;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class SignUpService {
+public class AuthService {
     private final UserRepository userRepository;
 
     public List<UzikUser> getList(Page page) {
         return userRepository.getList(page);
     }
 
-    @Transactional
-    public UzikUser save(SignUp signUp) {
+    public UzikUser signUp(SignUp signUp) {
         String email = signUp.getEmail();
 
         // 이메일 중복 체크
@@ -46,5 +48,13 @@ public class SignUpService {
         userRepository.save(user);
 
         return user;
+    }
+
+    @Transactional
+    public Session signIn(SignIn signIn) {
+        UzikUser user = userRepository.findByEmailAndPassWord(signIn.getEmail(), signIn.getPassWord())
+            .orElseThrow(InvalidSignInException::new);
+
+        return user.addSession();
     }
 }
