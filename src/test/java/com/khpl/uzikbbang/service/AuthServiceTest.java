@@ -1,6 +1,7 @@
 package com.khpl.uzikbbang.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javax.transaction.Transactional;
 
@@ -10,9 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.khpl.uzikbbang.domain.Session;
 import com.khpl.uzikbbang.domain.UzikUser;
-import com.khpl.uzikbbang.repository.SessionRepository;
+import com.khpl.uzikbbang.exception.InvalidSignInException;
 import com.khpl.uzikbbang.repository.UserRepository;
 import com.khpl.uzikbbang.request.SignIn;
 import com.khpl.uzikbbang.request.SignUp;
@@ -25,9 +25,6 @@ public class AuthServiceTest {
 
     @Autowired
     private AuthService authService;
-
-    @Autowired
-    private SessionRepository sessionRepository;
 
     @BeforeEach
     void clean() {
@@ -71,5 +68,25 @@ public class AuthServiceTest {
         authService.signIn(signIn);
 
         assertEquals(1, user.getSessions().size());
+    }
+
+    @Test
+    @DisplayName("로그인 실패 테스트")
+    @Transactional
+    void testNotSignIn() {
+        SignUp signUp = SignUp.builder()
+            .name("황인태")
+            .email("hwang@hwang.com")
+            .passWord("1234")
+        .build();
+
+        authService.signUp(signUp);
+
+        SignIn signIn = SignIn.builder()
+            .email("hwang@hwang.com")
+            .passWord("4321")
+        .build();
+
+        assertThrows(InvalidSignInException.class, () -> authService.signIn(signIn));
     }
 }
