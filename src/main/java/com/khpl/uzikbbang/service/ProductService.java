@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public void add(ProductCreate request) {
+    public Product add(ProductCreate request) {
         Product product = Product.builder()
                     .name(request.getName())
                     .kind(request.getKind())
@@ -45,6 +45,8 @@ public class ProductService {
                     .allergies(request.getAllergies())
                 .build();
         productRepository.save(product);
+
+        return product;
     }
 
     public List<ProductResponse> getList(Page page) {

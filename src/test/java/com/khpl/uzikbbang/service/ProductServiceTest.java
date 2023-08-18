@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.khpl.uzikbbang.domain.Product;
 import com.khpl.uzikbbang.repository.ProductRepository;
+import com.khpl.uzikbbang.request.ProductCreate;
 import com.khpl.uzikbbang.request.ProductEdit;
 
 @SpringBootTest
@@ -38,7 +39,7 @@ public class ProductServiceTest {
         ingredients.add("우유");
         allergies.add("우유");
 
-        Product product = Product.builder()
+        ProductCreate productCreate = ProductCreate.builder()
                     .name("우직한빵")
                     .kind("마들렌")
                     .addr("대흥동")
@@ -58,7 +59,7 @@ public class ProductServiceTest {
                     .allergies(allergies)
                 .build();
 
-        productRepository.save(product);
+        Product product = productService.add(productCreate);
         
         Product result = productRepository.findById(product.getId()).get();
 
