@@ -34,6 +34,9 @@ public class UzikUser {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Session> sessions = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<UzikOrder> orders = new ArrayList<>();
+
     private LocalDateTime registDt;
 
     @Builder
@@ -54,4 +57,11 @@ public class UzikUser {
         return session;
     }
 
+    public UzikOrder addOrder() {
+        UzikOrder order = new UzikOrder(this);
+
+        orders.add(order);
+
+        return order;
+    }
 }
