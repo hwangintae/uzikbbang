@@ -3,6 +3,9 @@ package com.khpl.uzikbbang.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.Base64;
+
+import javax.crypto.SecretKey;
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +19,9 @@ import com.khpl.uzikbbang.exception.InvalidSignInException;
 import com.khpl.uzikbbang.repository.UserRepository;
 import com.khpl.uzikbbang.request.SignIn;
 import com.khpl.uzikbbang.request.SignUp;
+
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 @SpringBootTest
 public class AuthServiceTest {
@@ -88,5 +94,18 @@ public class AuthServiceTest {
         .build();
 
         assertThrows(InvalidSignInException.class, () -> authService.signIn(signIn));
+    }
+
+
+    @Test
+    @DisplayName("jwt key")
+    void testJwtKey() {
+        SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        
+        byte[] encoded = key.getEncoded();
+
+        String strKey = Base64.getEncoder().encodeToString(encoded);
+
+        System.out.println(strKey);
     }
 }
