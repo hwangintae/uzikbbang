@@ -6,7 +6,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.khpl.uzikbbang.domain.Session;
 import com.khpl.uzikbbang.domain.UzikUser;
 import com.khpl.uzikbbang.exception.AlreadySignUpEmailException;
 import com.khpl.uzikbbang.exception.InvalidSignInException;
@@ -36,7 +35,7 @@ public class AuthService {
             throw new AlreadySignUpEmailException();
         }
 
-        // 암호화 구현 해야함
+        // TODO 암호화 구현 해야함
         String passWord = signUp.getPassWord();
 
         UzikUser user = UzikUser.builder()
@@ -51,10 +50,8 @@ public class AuthService {
     }
 
     @Transactional
-    public Session signIn(SignIn signIn) {
-        UzikUser user = userRepository.findByEmailAndPassWord(signIn.getEmail(), signIn.getPassWord())
+    public UzikUser signIn(SignIn signIn) {
+        return userRepository.findByEmailAndPassWord(signIn.getEmail(), signIn.getPassWord())
             .orElseThrow(InvalidSignInException::new);
-
-        return user.addSession();
     }
 }
