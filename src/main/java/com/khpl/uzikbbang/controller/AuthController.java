@@ -1,20 +1,21 @@
 package com.khpl.uzikbbang.controller;
 
 import java.time.Duration;
-import java.util.Base64;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.khpl.uzikbbang.config.AppConfig;
+import com.khpl.uzikbbang.config.data.UserSession;
 import com.khpl.uzikbbang.domain.UzikUser;
 import com.khpl.uzikbbang.request.SignIn;
 import com.khpl.uzikbbang.request.SignUp;
@@ -31,9 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
     private final AuthService authService;
-
-    @Value("${auth.key}")
-    private String AUTH_KEY;
+    private final AppConfig appConfig;
     
     @PostMapping(value = "/signup")
     public void signUp(@RequestBody SignUp signUp) {
@@ -46,7 +45,7 @@ public class AuthController {
 
         Long userId = user.getId();
 
-        byte[] decode = Base64.getDecoder().decode(AUTH_KEY);
+        byte[] decode = appConfig.getAuthKey();
 
         SecretKey secretKey = Keys.hmacShaKeyFor(decode);
 
@@ -68,6 +67,11 @@ public class AuthController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
             .build();
+    }
+
+    @GetMapping("/foo")
+    public Long foo(UserSession userSession) {
+        return userSession.getId();
     }
     
 }

@@ -51,7 +51,11 @@ public class AuthService {
 
     @Transactional
     public UzikUser signIn(SignIn signIn) {
-        return userRepository.findByEmailAndPassWord(signIn.getEmail(), signIn.getPassWord())
+        UzikUser user = userRepository.findByEmailAndPassWord(signIn.getEmail(), signIn.getPassWord())
             .orElseThrow(InvalidSignInException::new);
+
+        user.addSession();
+
+        return user;
     }
 }
