@@ -9,6 +9,5 @@ spring:
         hibernate:
             ddl-auto: create
 
-
-auth:
-    key: 'VW3XWmnGj7Jul1fek8cN2fX8awaTtjvbHF70b461N5o='
+uzik:
+    auth-key: 'VW3XWmnGj7Jul1fek8cN2fX8awaTtjvbHF70b461N5o='
