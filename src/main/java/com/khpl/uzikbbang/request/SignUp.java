@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 public class SignUp {
     private String name;
     private String email;
-    private String passWord;
+    private String password;
 
     @Builder
-    public SignUp(String name, String email, String passWord) {
+    public SignUp(String name, String email, String password) {
         this.name = name;
         this.email = email;
-        this.passWord = passWord;
+        this.password = password;
     }
 }

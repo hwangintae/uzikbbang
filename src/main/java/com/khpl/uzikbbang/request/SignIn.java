@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SignIn {
     private String email;
-    private String passWord;
+    private String password;
 
     @Builder
-    public SignIn(String email, String passWord) {
+    public SignIn(String email, String password) {
         this.email = email;
-        this.passWord = passWord;
+        this.password = password;
     }
 }

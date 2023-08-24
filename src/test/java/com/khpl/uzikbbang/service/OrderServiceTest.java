@@ -61,7 +61,7 @@ public class OrderServiceTest {
         SignUp signUp = SignUp.builder()
             .name("황인태")
             .email("hwang@hwang.com")
-            .passWord("1234")
+            .password("1234")
         .build();
 
         UzikUser user = authService.signUp(signUp);

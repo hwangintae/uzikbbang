@@ -26,7 +26,7 @@ public class UzikUser {
 
     private String name;
     private String email;
-    private String passWord;
+    private String password;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<CartItem> cartItems = new ArrayList<>();
@@ -40,10 +40,10 @@ public class UzikUser {
     private LocalDateTime registDt;
 
     @Builder
-    public UzikUser(String name, String email, String passWord) {
+    public UzikUser(String name, String email, String password) {
         this.name = name;
         this.email = email;
-        this.passWord = passWord;
+        this.password = password;
         this.registDt = LocalDateTime.now();
     }
 
