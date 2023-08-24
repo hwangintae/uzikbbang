@@ -36,7 +36,7 @@ public class AuthControllerTest {
     void testSignUp() throws JsonProcessingException, Exception {
         SignUp signUp = SignUp.builder()
             .email("hwang@hwang.com")
-            .passWord("1234")
+            .password("1234")
             .name("황인태")
         .build();
 
@@ -53,7 +53,7 @@ public class AuthControllerTest {
 
         SignIn signIn = SignIn.builder()
             .email("hwang@hwang.com")
-            .passWord("1234")
+            .password("1234")
         .build();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/auth/signin")

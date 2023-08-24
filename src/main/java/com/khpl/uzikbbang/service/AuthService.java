@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.khpl.uzikbbang.crypto.PasswordEncoder;
 import com.khpl.uzikbbang.domain.UzikUser;
 import com.khpl.uzikbbang.exception.AlreadySignUpEmailException;
 import com.khpl.uzikbbang.exception.InvalidSignInException;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UzikUser> getList(Page page) {
         return userRepository.getList(page);
@@ -35,15 +37,14 @@ public class AuthService {
             throw new AlreadySignUpEmailException();
         }
 
-        // TODO 암호화 구현 해야함
-        String passWord = signUp.getPassWord();
+        String password = passwordEncoder.encrypt(signUp.getPassword());
 
         UzikUser user = UzikUser.builder()
             .name(signUp.getName())
             .email(email)
-            .passWord(passWord)
+            .password(password)
         .build();
-        
+         
         userRepository.save(user);
 
         return user;
@@ -51,7 +52,7 @@ public class AuthService {
 
     @Transactional
     public UzikUser signIn(SignIn signIn) {
-        UzikUser user = userRepository.findByEmailAndPassWord(signIn.getEmail(), signIn.getPassWord())
+        UzikUser user = userRepository.findByEmail(signIn.getEmail())
             .orElseThrow(InvalidSignInException::new);
 
         user.addSession();

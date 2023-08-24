@@ -9,5 +9,4 @@ import com.khpl.uzikbbang.domain.UzikUser;
 
 public interface UserRepository extends JpaRepository<UzikUser, Long>, UserRepositoryDsl{
     Optional<UzikUser> findByEmail(String email);
-    Optional<UzikUser> findByEmailAndPassWord(String email, String passWord);
 }
