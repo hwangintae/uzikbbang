@@ -37,6 +37,8 @@ public class UzikUser {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<UzikOrder> orders = new ArrayList<>();
 
+    private String refreshToken;
+
     private LocalDateTime registDt;
 
     @Builder
@@ -63,5 +65,9 @@ public class UzikUser {
         orders.add(order);
 
         return order;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
