@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.khpl.uzikbbang.crypto.PasswordEncoder;
 import com.khpl.uzikbbang.domain.UzikUser;
 import com.khpl.uzikbbang.exception.AlreadySignUpEmailException;
+import com.khpl.uzikbbang.exception.BadCredentialsException;
 import com.khpl.uzikbbang.exception.InvalidSignInException;
 import com.khpl.uzikbbang.repository.UserRepository;
 import com.khpl.uzikbbang.request.Page;
@@ -58,5 +59,19 @@ public class AuthService {
         user.addSession();
 
         return user;
+    }
+
+    public UzikUser findById(Long id) {
+        return userRepository.findById(id)
+            .orElseThrow(() -> new BadCredentialsException());
+    }
+
+    public UzikUser findByEmail(String email) {
+        return userRepository.findByEmail(email)
+            .orElseThrow(() -> new BadCredentialsException());
+    }
+
+    public void save(UzikUser user) {
+        userRepository.save(user);
     }
 }
