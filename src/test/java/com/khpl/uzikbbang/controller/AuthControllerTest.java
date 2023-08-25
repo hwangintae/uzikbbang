@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import javax.servlet.http.Cookie;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.khpl.uzikbbang.domain.UzikUser;
+import com.khpl.uzikbbang.repository.UserRepository;
 import com.khpl.uzikbbang.request.SignIn;
 import com.khpl.uzikbbang.request.SignUp;
+import com.khpl.uzikbbang.service.AuthService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,6 +34,17 @@ public class AuthControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @BeforeEach
+    void clean() {
+        userRepository.deleteAll();
+    }
     
     @Test
     @DisplayName(value = "회원가입")
@@ -49,7 +64,13 @@ public class AuthControllerTest {
     @Test
     @DisplayName(value = "로그인")
     void testSingIn() throws JsonProcessingException, Exception {
-        testSignUp();
+        SignUp signUp = SignUp.builder()
+            .email("hwang@hwang.com")
+            .password("1234")
+            .name("황인태")
+        .build();
+
+        authService.signUp(signUp);
 
         SignIn signIn = SignIn.builder()
             .email("hwang@hwang.com")
@@ -60,17 +81,29 @@ public class AuthControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(signIn)))
             .andExpect(status().isOk())
-            .andExpect(cookie().exists("accessToken"))
+            .andExpect(cookie().exists("refreshToken"))
             .andDo(print());
     }
 
     @Test
-    @DisplayName(value = "foo에 요청을 했을 경우 cookie로 jwt를 보내야 한다.")
+    @DisplayName(value = "Authorization 토큰 테스트")
+    void testAuthorization() throws Exception {
+        String authorization = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkyOTU3MjUzLCJleHAiOjE2OTI5NTc4NTN9._dGdzf2LgngRleyQc_XE0mi8a43Sk1amJ8VH-w_lghI";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/auth/foo")
+            .header("authorization", authorization))
+            .andExpect(MockMvcResultMatchers.status().isOk());
+
+    }
+
+    @Test
+    @DisplayName(value = "인증이 필요할 경우 cookie로 refresh token을 보내고 header에 Authorization으로 access token을 보낸다.")
     void testFoo() throws Exception {
-        Cookie cookie = new Cookie("accessToken", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkyNjczMDMzfQ.-bFTSDafjnqW9A4CKejZTz5RP15p-aIG0IgD8-jsN8Y");
+        Cookie cookie = new Cookie("refreshToken", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkyNjczMDMzfQ.-bFTSDafjnqW9A4CKejZTz5RP15p-aIG0IgD8-jsN8Y");
         
         mockMvc.perform(MockMvcRequestBuilders.get("/auth/foo")
-            .cookie(cookie))
+            .cookie(cookie)
+            .header("Authorization", "asdfasedf"))
             .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

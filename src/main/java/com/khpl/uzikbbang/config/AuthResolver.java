@@ -1,8 +1,5 @@
 package com.khpl.uzikbbang.config;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -14,14 +11,14 @@ import com.khpl.uzikbbang.config.data.UserSession;
 import com.khpl.uzikbbang.exception.Unauthorized;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class AuthResolver implements HandlerMethodArgumentResolver {
 
-    private final AppConfig appConfig;
+    private final TokenParser tokenParser;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -31,31 +28,19 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
     @Override
     @Nullable
     public Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
-            NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
+        NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
 
-                HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-                if (httpServletRequest == null) {
-                    throw new Unauthorized();
-                }
+        String accessToken = webRequest.getHeader("Authorization");
 
-                // TODO 쿠키 인증 절차 추가로 필요함
-                Cookie[] cookies = httpServletRequest.getCookies();
-                if (cookies.length == 0) {
-                    throw new Unauthorized();
-                }
+        Claims claims = tokenParser.parse(accessToken);
 
-                String accessToken = cookies[0].getValue();
+        log.info("token expiration : {}", claims.getExpiration().getTime());
+        log.info("current time : {}", System.currentTimeMillis());
+        if (claims.getExpiration().getTime() < System.currentTimeMillis()) {
+            throw new Unauthorized();
+        }
 
-                try {
-                    Jws<Claims> claims = Jwts.parserBuilder()
-                            .setSigningKey(appConfig.getAuthKey())
-                            .build()
-                            .parseClaimsJws(accessToken);
-                    String userId = claims.getBody().getSubject();
-                    return new UserSession(Long.parseLong(userId));
-                } catch (Exception e) {
-                    throw new Unauthorized();
-                }
+        return tokenParser.getUserSession(claims);
     }
     
 }
