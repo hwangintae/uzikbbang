@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.khpl.uzikbbang.domain.UzikUser;
 import com.khpl.uzikbbang.repository.UserRepository;
 import com.khpl.uzikbbang.request.SignIn;
 import com.khpl.uzikbbang.request.SignUp;
@@ -88,12 +87,41 @@ public class AuthControllerTest {
     @Test
     @DisplayName(value = "Authorization 토큰 테스트")
     void testAuthorization() throws Exception {
-        String authorization = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkyOTU3MjUzLCJleHAiOjE2OTI5NTc4NTN9._dGdzf2LgngRleyQc_XE0mi8a43Sk1amJ8VH-w_lghI";
+        String authorization = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkzMjEyNjkzLCJleHAiOjE2OTMyMTMyOTN9.NClwyUEK9fq4vzU5x_N1HFN_zDvGNmKVh7a3IAze4do";
 
         mockMvc.perform(MockMvcRequestBuilders.get("/auth/foo")
             .header("authorization", authorization))
             .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 
+    @Test
+    @DisplayName(value = "Authorization 토큰 만료 시 재발급 테스트")
+    void testNonAuthorization() throws Exception {
+        String authorization = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkyOTU3MjUzLCJleHAiOjE2OTI5NTc4NTN9._dGdzf2LgngRleyQc_XE0mi8a43Sk1amJ8VH-w_lghI";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/auth/foo")
+            .header("authorization", authorization))
+            .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+
+        SignUp signUp = SignUp.builder()
+            .email("hwang@hwang.com")
+            .password("1234")
+            .name("황인태")
+        .build();
+
+        authService.signUp(signUp);
+
+        SignIn signIn = SignIn.builder()
+            .email("hwang@hwang.com")
+            .password("1234")
+        .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/signin")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(signIn)))
+            .andExpect(status().isOk())
+            .andExpect(cookie().exists("refreshToken"))
+            .andDo(print());
     }
 
     @Test

@@ -41,12 +41,15 @@ public class UzikUser {
 
     private LocalDateTime registDt;
 
+    private boolean useAt;
+
     @Builder
     public UzikUser(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.registDt = LocalDateTime.now();
+        this.useAt = true;
     }
 
     public Session addSession() {
@@ -69,5 +72,9 @@ public class UzikUser {
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public void updateUseAt(boolean useAt) {
+        this.useAt = useAt;
     }
 }

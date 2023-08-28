@@ -131,4 +131,17 @@ public class AuthServiceTest {
 
         System.out.println(strKey);
     }
+
+    @Test
+    @DisplayName("사용자 사용 여부 업데이트")
+    @Transactional
+    void testUseAt() {
+        SignUp signUp = SignUp.builder()
+            .name("황인태")
+            .email("hwang@hwang.com")
+            .password("1234")
+        .build();
+
+        UzikUser user = authService.signUp(signUp);
+    }
 }

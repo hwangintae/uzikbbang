@@ -25,6 +25,7 @@ import com.khpl.uzikbbang.request.SignUp;
 import com.khpl.uzikbbang.response.SessionResponse;
 import com.khpl.uzikbbang.service.AuthService;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -98,9 +99,23 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public void refresh(HttpServletRequest httpServletRequest) {
-        RefreshRequest request = new RefreshRequest(httpServletRequest, tokenParser);
+        RefreshRequest request = RefreshRequest.builder()
+            .httpServletRequest(httpServletRequest)
+            .tokenParser(tokenParser)
+        .build();
 
         request.valid();
+
+        String token = request.getToken();
+        Claims claims = request.getClaims(token);        
+        UserSession userSession = tokenParser.getUserSession(claims);
+        
+        boolean isInValidRefresh = request.isInValidRefresh(httpServletRequest);
+        Long id = userSession.getId();
+
+        if (isInValidRefresh) {
+            UzikUser user = authService.findById(id);
+        }
     }
     
 }
