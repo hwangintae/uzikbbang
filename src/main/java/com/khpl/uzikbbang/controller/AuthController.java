@@ -24,6 +24,7 @@ import com.khpl.uzikbbang.request.SignIn;
 import com.khpl.uzikbbang.request.SignUp;
 import com.khpl.uzikbbang.response.SessionResponse;
 import com.khpl.uzikbbang.service.AuthService;
+import com.khpl.uzikbbang.service.UserService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -39,6 +40,8 @@ public class AuthController {
     private final AuthService authService;
     private final AppConfig appConfig;
     private final TokenParser tokenParser;
+
+    private final UserService userService;
     
     @PostMapping(value = "/signup")
     public void signUp(@RequestBody SignUp signUp) {
@@ -76,7 +79,7 @@ public class AuthController {
                 .compact();
                 
         user.setRefreshToken(refreshToken);
-        authService.save(user);
+        userService.save(user);
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
             .domain("localhost") // TODO 개발 환경에 맞게 분리해야함
@@ -114,7 +117,7 @@ public class AuthController {
         Long id = userSession.getId();
 
         if (isInValidRefresh) {
-            UzikUser user = authService.findById(id);
+            UzikUser user = userService.findById(id);
         }
     }
     
