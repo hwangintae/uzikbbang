@@ -8,6 +8,9 @@ spring:
         show-sql: true
         hibernate:
             ddl-auto: create
+        properties:
+            hibernate:
+                format-sql: true
 
 uzik:
     auth-key: 'VW3XWmnGj7Jul1fek8cN2fX8awaTtjvbHF70b461N5o='
