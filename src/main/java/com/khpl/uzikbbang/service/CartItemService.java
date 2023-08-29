@@ -1,5 +1,9 @@
 package com.khpl.uzikbbang.service;
 
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.khpl.uzikbbang.domain.CartItem;
@@ -15,14 +19,23 @@ public class CartItemService {
 
     private final CartItemRepository cartItemRepository;
 
-    public CartItem addItem(UzikUser user, Product product) {
-        CartItem cartItem = CartItem.builder()
-            .user(user)
-            .product(product)
-        .build();
+    // TODO 장바구니에 상품 추가 시, 이미 장바구니에 있는경우  cnt 만 올리기
+    @Transactional
+    public CartItem addItems(UzikUser user, Product product) {
+        Optional<CartItem> findCartItem = cartItemRepository.findByUserIdAndProductIdDSL(user.getId(), product.getId());
+        // Optional<CartItem> findCartItem = cartItemRepository.findByUserIdAndProductId(user.getId(), product.getId());
 
-        cartItemRepository.save(cartItem);
-        
-        return cartItem;
+        if (findCartItem.isPresent()) {
+            findCartItem.get().addCnt();
+            
+            return findCartItem.get();
+        } else {
+            CartItem cartItem = CartItem.builder()
+                .user(user)
+                .product(product)
+            .build();
+
+            return cartItemRepository.save(cartItem);
+        }
     }
 }
