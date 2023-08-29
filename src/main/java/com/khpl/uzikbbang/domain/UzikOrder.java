@@ -11,13 +11,17 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UzikOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +40,7 @@ public class UzikOrder {
         this.createDt = LocalDateTime.now();
     }
 
-    public List<UzikOrderProduct> orderByCartItem(List<CartItem> cartItems) {
+    public List<UzikOrderProduct> addOrderProducts(List<CartItem> cartItems) {
         List<UzikOrderProduct> list = cartItems.stream()
             .map(cartItem -> {
                 Product product = cartItem.getProduct();
@@ -55,7 +59,7 @@ public class UzikOrder {
         return this.orderProducts;
     }
 
-    public List<UzikOrderProduct> orderByProduct(Product product, int cnt) {
+    public List<UzikOrderProduct> addOrderProducts(Product product, int cnt) {
         UzikOrderProduct orderProduct = UzikOrderProduct.builder()
             .order(this)
             .product(product)
