@@ -19,11 +19,10 @@ public class CartItemService {
 
     private final CartItemRepository cartItemRepository;
 
-    // TODO 장바구니에 상품 추가 시, 이미 장바구니에 있는경우  cnt 만 올리기
+    // [v] 장바구니에 상품 추가 시, 이미 장바구니에 있는경우  cnt 만 올리기
     @Transactional
     public CartItem addItems(UzikUser user, Product product) {
-        Optional<CartItem> findCartItem = cartItemRepository.findByUserIdAndProductIdDSL(user.getId(), product.getId());
-        // Optional<CartItem> findCartItem = cartItemRepository.findByUserIdAndProductId(user.getId(), product.getId());
+        Optional<CartItem> findCartItem = cartItemRepository.getCartItem(user.getId(), product.getId());
 
         if (findCartItem.isPresent()) {
             findCartItem.get().addCnt();

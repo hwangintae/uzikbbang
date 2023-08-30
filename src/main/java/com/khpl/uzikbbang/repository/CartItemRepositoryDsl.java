@@ -5,5 +5,5 @@ import java.util.Optional;
 import com.khpl.uzikbbang.domain.CartItem;
 
 public interface CartItemRepositoryDsl {
-    Optional<CartItem> findByUserIdAndProductIdDSL(Long userId, Long productId);
+    Optional<CartItem> getCartItem(Long userId, Long productId);
 }
