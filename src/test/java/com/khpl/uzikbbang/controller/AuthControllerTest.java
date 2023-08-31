@@ -87,7 +87,7 @@ public class AuthControllerTest {
     @Test
     @DisplayName(value = "Authorization 토큰 테스트")
     void testAuthorization() throws Exception {
-        String authorization = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkzMjEyNjkzLCJleHAiOjE2OTMyMTMyOTN9.NClwyUEK9fq4vzU5x_N1HFN_zDvGNmKVh7a3IAze4do";
+        String authorization = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkzNDUzODAwLCJleHAiOjE2OTM0NTQ0MDB9.4_T23qzFXORoh43Dr99P3YCXjGVkFY2yx2RXUgrL-i4";
 
         mockMvc.perform(MockMvcRequestBuilders.get("/auth/foo")
             .header("authorization", authorization))
@@ -125,13 +125,14 @@ public class AuthControllerTest {
     }
 
     @Test
-    @DisplayName(value = "인증이 필요할 경우 cookie로 refresh token을 보내고 header에 Authorization으로 access token을 보낸다.")
+    @DisplayName(value = "accessToken가 만료되었을 때, refreshToken으로 accessToken을 갱신한다.")
     void testFoo() throws Exception {
-        Cookie cookie = new Cookie("refreshToken", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkyNjczMDMzfQ.-bFTSDafjnqW9A4CKejZTz5RP15p-aIG0IgD8-jsN8Y");
+        Cookie cookie = new Cookie("refreshToken", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkzNDU0MTMwLCJleHAiOjE2OTQwNTg5Mjl9.zsPxXE81SpzUGbLIpuswme9BShybZUK9U_5k1hPpXnQ");
         
-        mockMvc.perform(MockMvcRequestBuilders.get("/auth/foo")
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/refresh")
             .cookie(cookie)
-            .header("Authorization", "asdfasedf"))
-            .andExpect(MockMvcResultMatchers.status().isOk());
+            .header("Authorization", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkyOTU3MjUzLCJleHAiOjE2OTI5NTc4NTN9._dGdzf2LgngRleyQc_XE0mi8a43Sk1amJ8VH-w_lghI"))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andDo(print());
     }
 }

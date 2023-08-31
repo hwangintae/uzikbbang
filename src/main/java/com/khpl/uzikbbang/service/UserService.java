@@ -38,9 +38,11 @@ public class UserService {
     }
 
     @Transactional
-    public void updateTest(Long id, boolean bool) {
+    public UzikUser updateUseAt(Long id, boolean bool) {
         UzikUser user = userRepository.findById(id).get();
         user.updateUseAt(bool);
+
+        return user;
     }
     
 }

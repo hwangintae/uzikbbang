@@ -19,6 +19,7 @@ import com.khpl.uzikbbang.config.AppConfig;
 import com.khpl.uzikbbang.config.TokenParser;
 import com.khpl.uzikbbang.config.data.UserSession;
 import com.khpl.uzikbbang.domain.UzikUser;
+import com.khpl.uzikbbang.exception.BlockUserException;
 import com.khpl.uzikbbang.request.RefreshRequest;
 import com.khpl.uzikbbang.request.SignIn;
 import com.khpl.uzikbbang.request.SignUp;
@@ -31,7 +32,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 
-
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -42,7 +42,7 @@ public class AuthController {
     private final TokenParser tokenParser;
 
     private final UserService userService;
-    
+
     @PostMapping(value = "/signup")
     public void signUp(@RequestBody SignUp signUp) {
         authService.signUp(signUp);
@@ -54,7 +54,7 @@ public class AuthController {
     // [v] access token 갱신 주기 짧게 하기
     // [v] access token은 json으로 리턴한다.
     @PostMapping(value = "/signin")
-    public ResponseEntity<SessionResponse> singIn (@RequestBody SignIn signIn) {
+    public ResponseEntity<SessionResponse> singIn(@RequestBody SignIn signIn) {
         UzikUser user = authService.signIn(signIn);
         Long userId = user.getId();
 
@@ -77,18 +77,18 @@ public class AuthController {
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(now + sevenDays))
                 .compact();
-                
+
         user.setRefreshToken(refreshToken);
         userService.save(user);
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-            .domain("localhost") // TODO 개발 환경에 맞게 분리해야함
-            .path("/")
-            .httpOnly(true)
-            .secure(false)
-            .sameSite("Strict")
-            .maxAge(Duration.ofDays(7))
-        .build();
+                .domain("localhost") // TODO 개발 환경에 맞게 분리해야함
+                .path("/")
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Strict")
+                .maxAge(Duration.ofDays(7))
+                .build();
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
@@ -101,24 +101,37 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public void refresh(HttpServletRequest httpServletRequest) {
+    public String refresh(HttpServletRequest httpServletRequest) {
         RefreshRequest request = RefreshRequest.builder()
-            .httpServletRequest(httpServletRequest)
-            .tokenParser(tokenParser)
-        .build();
+                .httpServletRequest(httpServletRequest)
+                .tokenParser(tokenParser)
+                .build();
 
         request.valid();
 
         String token = request.getToken();
-        Claims claims = request.getClaims(token);        
+        Claims claims = request.getClaims(token);
         UserSession userSession = tokenParser.getUserSession(claims);
-        
-        boolean isInValidRefresh = request.isInValidRefresh(httpServletRequest);
-        Long id = userSession.getId();
 
+        boolean isInValidRefresh = request.isInValidRefresh(httpServletRequest);
+
+        Long id = userSession.getId();
         if (isInValidRefresh) {
-            UzikUser user = userService.findById(id);
+            userService.updateUseAt(id, false);
+            throw new BlockUserException();
+        } else {
+            SecretKey secretKey = Keys.hmacShaKeyFor(appConfig.getAuthKey());
+
+            long now = System.currentTimeMillis();
+            long tenMin = Duration.ofMinutes(10).toMillis();
+
+            return Jwts.builder()
+                    .setSubject(String.valueOf(id))
+                    .signWith(secretKey)
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(now + tenMin))
+                    .compact();
         }
     }
-    
+
 }
