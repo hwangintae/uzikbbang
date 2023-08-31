@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Base64;
 
 import javax.crypto.SecretKey;
-import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,6 +36,9 @@ public class AuthServiceTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserService userService;
 
     @BeforeEach
     void clean() {
@@ -79,7 +81,6 @@ public class AuthServiceTest {
 
     @Test
     @DisplayName("로그인 후 세션 등록")
-    @Transactional
     void testSignIn() {
         SignUp signUp = SignUp.builder()
             .name("황인태")
@@ -101,7 +102,6 @@ public class AuthServiceTest {
 
     @Test
     @DisplayName("로그인 실패 테스트")
-    @Transactional
     void testNotSignIn() {
         SignUp signUp = SignUp.builder()
             .name("황인태")
@@ -134,7 +134,6 @@ public class AuthServiceTest {
 
     @Test
     @DisplayName("사용자 사용 여부 업데이트")
-    @Transactional
     void testUseAt() {
         SignUp signUp = SignUp.builder()
             .name("황인태")
@@ -143,5 +142,8 @@ public class AuthServiceTest {
         .build();
 
         UzikUser user = authService.signUp(signUp);
+        assertTrue(user.isUseAt());
+
+        userService.updateTest(user.getId(), false);
     }
 }
