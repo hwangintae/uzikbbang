@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.khpl.uzikbbang.crypto.PasswordEncoder;
+import com.khpl.uzikbbang.domain.Session;
 import com.khpl.uzikbbang.domain.UzikUser;
 import com.khpl.uzikbbang.exception.AlreadySignUpEmailException;
 import com.khpl.uzikbbang.exception.InvalidSignInException;
@@ -46,8 +47,22 @@ public class AuthService {
         UzikUser user = userRepository.findByEmail(signIn.getEmail())
             .orElseThrow(InvalidSignInException::new);
 
+        boolean isMatches = passwordEncoder.matches(signIn.getPassword(), user.getPassword());
+
+        if (isMatches == false) {
+            throw new InvalidSignInException();
+        }        
+
         user.addSession();
 
         return user;
+    }
+
+    @Transactional
+    public Session getSession(Long userId) {
+        UzikUser user = userRepository.findById(userId)
+            .orElseThrow(InvalidSignInException::new);
+
+        return user.addSession();
     }
 }
