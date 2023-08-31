@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.khpl.uzikbbang.crypto.PasswordEncoder;
+import com.khpl.uzikbbang.domain.Session;
 import com.khpl.uzikbbang.domain.UzikUser;
 import com.khpl.uzikbbang.exception.InvalidSignInException;
 import com.khpl.uzikbbang.repository.UserRepository;
@@ -56,7 +57,6 @@ public class AuthServiceTest {
 
         UzikUser user = authService.signUp(signUp);
 
-        assertEquals(1L, user.getId());
         assertEquals("황인태", user.getName());
         assertEquals("hwang@hwang.com", user.getEmail());
         assertTrue(passwordEncoder.matches("1234", user.getPassword()));
@@ -73,7 +73,6 @@ public class AuthServiceTest {
 
         UzikUser user = authService.signUp(signUp);
 
-        assertEquals(1L, user.getId());
         assertEquals("황인태", user.getName());
         assertEquals("hwang@hwang.com", user.getEmail());
         assertNotEquals("1234", user.getPassword());
@@ -95,14 +94,34 @@ public class AuthServiceTest {
             .password("1234")
         .build();
 
-        authService.signIn(signIn);
+        UzikUser resultUser = authService.signIn(signIn);
+        Session session = authService.getSession(resultUser.getId());
 
-        assertEquals(1, user.getSessions().size());
+        assertEquals(resultUser.getId(), session.getUser().getId());
     }
 
     @Test
-    @DisplayName("로그인 실패 테스트")
-    void testNotSignIn() {
+    @DisplayName("회원 email이 틀릴 경우 로그인 실패 테스트")
+    void testNotSignInEmail() {
+        SignUp signUp = SignUp.builder()
+            .name("황인태")
+            .email("hwang@hwang.com")
+            .password("1234")
+        .build();
+
+        authService.signUp(signUp);
+
+        SignIn signIn = SignIn.builder()
+            .email("hwang@intae.com")
+            .password("1234")
+        .build();
+
+        assertThrows(InvalidSignInException.class, () -> authService.signIn(signIn));
+    }
+
+    @Test
+    @DisplayName("회원 비밀번호가 틀릴 경우 로그인 실패 테스트")
+    void testWrongPassword() {
         SignUp signUp = SignUp.builder()
             .name("황인태")
             .email("hwang@hwang.com")
@@ -144,6 +163,8 @@ public class AuthServiceTest {
         UzikUser user = authService.signUp(signUp);
         assertTrue(user.isUseAt());
 
-        userService.updateTest(user.getId(), false);
+        UzikUser resultUser = userService.updateUseAt(user.getId(), false);
+
+        assertTrue(resultUser.isUseAt() == false);
     }
 }
