@@ -4,12 +4,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.Duration;
-import java.util.Date;
-
 import javax.servlet.http.Cookie;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,14 +14,12 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseCookie;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.khpl.uzikbbang.config.TokenParser;
 import com.khpl.uzikbbang.repository.UserRepository;
 import com.khpl.uzikbbang.request.SignIn;
 import com.khpl.uzikbbang.request.SignUp;
@@ -47,8 +41,8 @@ public class AuthControllerTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private TokenParser tokenParser;
+//     @Autowired
+//     private TokenParser tokenParser;
 
     @BeforeEach
     void clean() {
@@ -128,8 +122,21 @@ public class AuthControllerTest {
     }
 
     @Test
-    @DisplayName(value = "accessToken 만료 시 재발급 테스트")
+    @DisplayName(value = "Authorization accessToken 만료 테스트")
     void testNonAuthorization() throws Exception {
+
+        // 만료된 accessToken
+        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkyOTU3MjUzLCJleHAiOjE2OTI5NTc4NTN9._dGdzf2LgngRleyQc_XE0mi8a43Sk1amJ8VH-w_lghI";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/auth/foo")
+                .header("authorization", accessToken))
+                .andExpect(status().is(10_001))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName(value = "accessToken 만료 시 재발급 테스트")
+    void testRefresh() throws Exception {
         SignUp signUp = SignUp.builder()
                 .email("hwang@hwang.com")
                 .password("1234")
@@ -157,32 +164,49 @@ public class AuthControllerTest {
 
         if (cookie == null)
             return;
-
-        System.out.println(new Date().getTime());
-        System.out.println(cookie.getMaxAge());
         
-        
-        // mockMvc.perform(MockMvcRequestBuilders.post("/auth/refresh")
-        //         .cookie(cookie)
-        //         .header("Authorization", accessToken))
-        //         .andExpect(status().isOk())
-        //         .andDo(print());
-
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/refresh")
+                .cookie(cookie)
+                .header("Authorization", accessToken))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
-    @DisplayName(value = "쿠키가 만료되면 어떻게 됨?")
-    void testExpirateCookie() {
-         ResponseCookie cookie = ResponseCookie.from("test", "test")
-                .domain("localhost")
-                .path("/")
-                .httpOnly(true)
-                .secure(false)
-                .sameSite("Strict")
-                .maxAge(11)
+    @DisplayName(value = "accessToken이 만료가 안됐지만 refresh를 요청한 경우")
+    void testNonRefresh() throws Exception {
+        SignUp signUp = SignUp.builder()
+                .email("hwang@hwang.com")
+                .password("1234")
+                .name("황인태")
                 .build();
 
-        System.out.println(cookie.getMaxAge().getSeconds());
-        System.out.println(cookie.getMaxAge());
+        authService.signUp(signUp);
+
+        SignIn signIn = SignIn.builder()
+                .email("hwang@hwang.com")
+                .password("1234")
+                .build();
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/auth/signin")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(signIn)))
+                .andExpect(status().isOk())
+                .andExpect(cookie().exists("refreshToken"))
+                .andReturn();
+                        
+        Cookie cookie = result.getResponse().getCookie("refreshToken");
+
+        if (cookie == null)
+            return;
+
+        String content = result.getResponse().getContentAsString();
+        JSONObject jsonObject = new JSONObject(content);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/refresh")
+                .cookie(cookie)
+                .header("Authorization", jsonObject.get("accessToken")))
+                .andExpect(status().isUnauthorized())
+                .andDo(print());
     }
 }

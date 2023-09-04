@@ -6,6 +6,7 @@ import com.khpl.uzikbbang.config.data.UserSession;
 import com.khpl.uzikbbang.exception.Unauthorized;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class TokenParser {
-    
+
     private final AppConfig appConfig;
 
     public Claims parse(String token) {
@@ -27,6 +28,22 @@ public class TokenParser {
         } catch (Exception e) {
             throw new Unauthorized();
         }
+    }
+
+    public boolean isExpiration(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(appConfig.getAuthKey())
+                    .build()
+                    .parseClaimsJws(token);
+
+        } catch (ExpiredJwtException e) {
+            return true;
+        } catch (Exception e) {
+            throw new Unauthorized();
+        }
+
+        return false;
     }
 
     public UserSession getUserSession(Claims claims) {

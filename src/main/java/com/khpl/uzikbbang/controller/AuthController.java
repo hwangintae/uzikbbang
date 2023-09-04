@@ -1,8 +1,5 @@
 package com.khpl.uzikbbang.controller;
 
-import java.time.Duration;
-import java.util.Date;
-
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,19 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.khpl.uzikbbang.config.AppConfig;
+import com.khpl.uzikbbang.config.Auth;
 import com.khpl.uzikbbang.config.TokenParser;
 import com.khpl.uzikbbang.config.data.UserSession;
 import com.khpl.uzikbbang.domain.UzikUser;
-import com.khpl.uzikbbang.exception.BlockUserException;
 import com.khpl.uzikbbang.request.RefreshRequest;
 import com.khpl.uzikbbang.request.SignIn;
+import com.khpl.uzikbbang.request.SignOut;
 import com.khpl.uzikbbang.request.SignUp;
 import com.khpl.uzikbbang.response.SessionResponse;
 import com.khpl.uzikbbang.service.AuthService;
 import com.khpl.uzikbbang.service.UserService;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 
@@ -56,43 +52,40 @@ public class AuthController {
     @PostMapping(value = "/signin")
     public ResponseEntity<SessionResponse> singIn(@RequestBody SignIn signIn) {
         UzikUser user = authService.signIn(signIn);
+
         Long userId = user.getId();
-
         SecretKey secretKey = Keys.hmacShaKeyFor(appConfig.getAuthKey());
+        Auth auth = new Auth(secretKey, userId);
 
-        long now = System.currentTimeMillis();
-        long tenMin = Duration.ofMinutes(10).toMillis();
-        long sevenDays = Duration.ofDays(7).toMillis();
-
-        String accessToken = Jwts.builder()
-                .setSubject(String.valueOf(userId))
-                .signWith(secretKey)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(now + tenMin))
-                .compact();
-
-        String refreshToken = Jwts.builder()
-                .setSubject(String.valueOf(userId))
-                .signWith(secretKey)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(now + sevenDays))
-                .compact();
+        String accessToken = auth.getAccessToken();
+        String refreshToken = auth.getRefreshToken();
 
         user.setRefreshToken(refreshToken);
         userService.save(user);
 
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-                .domain("localhost") // TODO 개발 환경에 맞게 분리해야함
-                .path("/")
-                .httpOnly(true)
-                .secure(false)
-                .sameSite("Strict")
-                .maxAge(Duration.ofDays(7))
-                .build();
+        ResponseCookie cookie = auth.getCookie(refreshToken);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(new SessionResponse(accessToken));
+    }
+
+    @PostMapping(value = "/signout")
+    public ResponseEntity<SessionResponse> singOut(@RequestBody SignOut signOut) {
+        authService.signOut(signOut);
+
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
+                .domain("localhost")
+                .path("/")
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Strict")
+                .maxAge(0)
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(new SessionResponse(""));
     }
 
     @GetMapping("/foo")
@@ -101,7 +94,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public String refresh(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<SessionResponse> refresh(HttpServletRequest httpServletRequest) {
         RefreshRequest request = RefreshRequest.builder()
                 .httpServletRequest(httpServletRequest)
                 .tokenParser(tokenParser)
@@ -109,29 +102,14 @@ public class AuthController {
 
         request.valid();
 
-        String token = request.getToken();
-        Claims claims = request.getClaims(token);
-        UserSession userSession = tokenParser.getUserSession(claims);
+        Long id = request.getUserId();
+        SecretKey secretKey = Keys.hmacShaKeyFor(appConfig.getAuthKey());
+        Auth auth = new Auth(secretKey, id);
 
-        boolean isInValidRefresh = request.isInValidRefresh(httpServletRequest);
+        String accessToken = auth.getAccessToken();
 
-        Long id = userSession.getId();
-        if (isInValidRefresh) {
-            userService.updateUseAt(id, false);
-            throw new BlockUserException();
-        } else {
-            SecretKey secretKey = Keys.hmacShaKeyFor(appConfig.getAuthKey());
-
-            long now = System.currentTimeMillis();
-            long tenMin = Duration.ofMinutes(10).toMillis();
-
-            return Jwts.builder()
-                    .setSubject(String.valueOf(id))
-                    .signWith(secretKey)
-                    .setIssuedAt(new Date())
-                    .setExpiration(new Date(now + tenMin))
-                    .compact();
-        }
+        return ResponseEntity.ok()
+                .body(new SessionResponse(accessToken));
     }
 
 }

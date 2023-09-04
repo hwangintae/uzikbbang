@@ -8,7 +8,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.khpl.uzikbbang.config.data.UserSession;
-import com.khpl.uzikbbang.exception.Unauthorized;
+import com.khpl.uzikbbang.exception.TokenExpirateException;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -32,15 +32,16 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
         String accessToken = webRequest.getHeader("Authorization");
 
-        Claims claims = tokenParser.parse(accessToken);
-
-        log.info("token expiration : {}", claims.getExpiration().getTime());
-        log.info("current time : {}", System.currentTimeMillis());
-        if (claims.getExpiration().getTime() < System.currentTimeMillis()) {
-            throw new Unauthorized();
+        if (tokenParser.isExpiration(accessToken)) {
+            throw new TokenExpirateException();
         }
+        
+        Claims claims = tokenParser.parse(accessToken);
+        UserSession userSession = tokenParser.getUserSession(claims);
 
-        return tokenParser.getUserSession(claims);
+        log.info("Authorization : userId = {}", userSession.getId());
+
+        return userSession;
     }
     
 }
