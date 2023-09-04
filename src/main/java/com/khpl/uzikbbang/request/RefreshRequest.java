@@ -4,7 +4,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import com.khpl.uzikbbang.config.TokenParser;
+import com.khpl.uzikbbang.config.data.UserSession;
 import com.khpl.uzikbbang.exception.BadCredentialsException;
+import com.khpl.uzikbbang.exception.Unauthorized;
 
 import io.jsonwebtoken.Claims;
 import lombok.Builder;
@@ -19,7 +21,7 @@ public class RefreshRequest {
         this.tokenParser = tokenParser;
     }
 
-    public String getToken() {
+    public String getRefreshToken() {
         Cookie[] cookies = this.httpServletRequest.getCookies();
         String refreshToken = cookies[0].getValue();
 
@@ -45,49 +47,43 @@ public class RefreshRequest {
 
     public void validateRequest(HttpServletRequest httpServletRequest) {
         if (httpServletRequest == null) {
-            throw new BadCredentialsException();
+            throw new Unauthorized();
         }
     }
 
     public void validateCookies(Cookie[] cookies) {
-        if (cookies.length == 0) {
-            throw new BadCredentialsException();
+        if (cookies.length == 0 || cookies == null) {
+            throw new Unauthorized();
         }
     }
 
     public void validateRefreshToken(String refreshToken) {
         if (refreshToken.equals("") || refreshToken == null) {
-            throw new BadCredentialsException();
+            throw new Unauthorized();
         }
 
-        Claims claims = tokenParser.parse(refreshToken);
-        if (claims.getExpiration().getTime() < System.currentTimeMillis()) {
-            throw new BadCredentialsException();
+        if (tokenParser.isExpiration(refreshToken)) {
+            throw new Unauthorized();
         }
     }
 
     public void validateAccessToken(String accessToken) {
-        Claims claims = tokenParser.parse(accessToken);
-
         if (accessToken.equals("") || accessToken == null) {
             throw new BadCredentialsException();
         }
 
-        if (claims.getExpiration().getTime() < System.currentTimeMillis()) {
+        // refresh 요청을 했는데 진짜로 accessToken이 만료됐는지 확인
+        if (tokenParser.isExpiration(accessToken) == false) {
             throw new BadCredentialsException();
         }
     }
 
-    // refresh 요청을 했는데 진짜로 accessToken이 만료됐는지 확인
-    public boolean isInValidRefresh(HttpServletRequest httpServletRequest) {
-        String accessToken = httpServletRequest.getHeader("Authorization");
-        Claims claims = tokenParser.parse(accessToken);
+    public Long getUserId() {
+        String refreshToken = getRefreshToken();
+        Claims claims = getClaims(refreshToken);
+        UserSession userSession = tokenParser.getUserSession(claims);
 
-        if (claims.getExpiration().getTime() > System.currentTimeMillis()) {
-            return true;
-        }
-
-        return false;
+        return userSession.getId();
     }
     
 }
