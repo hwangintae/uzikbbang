@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Base64;
+import java.util.Optional;
 
 import javax.crypto.SecretKey;
 
@@ -21,6 +22,7 @@ import com.khpl.uzikbbang.domain.UzikUser;
 import com.khpl.uzikbbang.exception.InvalidSignInException;
 import com.khpl.uzikbbang.repository.UserRepository;
 import com.khpl.uzikbbang.request.SignIn;
+import com.khpl.uzikbbang.request.SignOut;
 import com.khpl.uzikbbang.request.SignUp;
 
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -50,10 +52,10 @@ public class AuthServiceTest {
     @DisplayName("회원 가입 테스트")
     void testSignUp() {
         SignUp signUp = SignUp.builder()
-            .name("황인태")
-            .email("hwang@hwang.com")
-            .password("1234")
-        .build();
+                .name("황인태")
+                .email("hwang@hwang.com")
+                .password("1234")
+                .build();
 
         UzikUser user = authService.signUp(signUp);
 
@@ -66,10 +68,10 @@ public class AuthServiceTest {
     @DisplayName("회원 가입 시 password가 암호화 된다")
     void testSignUpScrypt() {
         SignUp signUp = SignUp.builder()
-            .name("황인태")
-            .email("hwang@hwang.com")
-            .password("1234")
-        .build();
+                .name("황인태")
+                .email("hwang@hwang.com")
+                .password("1234")
+                .build();
 
         UzikUser user = authService.signUp(signUp);
 
@@ -82,17 +84,17 @@ public class AuthServiceTest {
     @DisplayName("로그인 후 세션 등록")
     void testSignIn() {
         SignUp signUp = SignUp.builder()
-            .name("황인태")
-            .email("hwang@hwang.com")
-            .password("1234")
-        .build();
+                .name("황인태")
+                .email("hwang@hwang.com")
+                .password("1234")
+                .build();
 
-        UzikUser user = authService.signUp(signUp);
+        authService.signUp(signUp);
 
         SignIn signIn = SignIn.builder()
-            .email("hwang@hwang.com")
-            .password("1234")
-        .build();
+                .email("hwang@hwang.com")
+                .password("1234")
+                .build();
 
         UzikUser resultUser = authService.signIn(signIn);
         Session session = authService.getSession(resultUser.getId());
@@ -104,17 +106,17 @@ public class AuthServiceTest {
     @DisplayName("회원 email이 틀릴 경우 로그인 실패 테스트")
     void testNotSignInEmail() {
         SignUp signUp = SignUp.builder()
-            .name("황인태")
-            .email("hwang@hwang.com")
-            .password("1234")
-        .build();
+                .name("황인태")
+                .email("hwang@hwang.com")
+                .password("1234")
+                .build();
 
         authService.signUp(signUp);
 
         SignIn signIn = SignIn.builder()
-            .email("hwang@intae.com")
-            .password("1234")
-        .build();
+                .email("hwang@intae.com")
+                .password("1234")
+                .build();
 
         assertThrows(InvalidSignInException.class, () -> authService.signIn(signIn));
     }
@@ -123,27 +125,26 @@ public class AuthServiceTest {
     @DisplayName("회원 비밀번호가 틀릴 경우 로그인 실패 테스트")
     void testWrongPassword() {
         SignUp signUp = SignUp.builder()
-            .name("황인태")
-            .email("hwang@hwang.com")
-            .password("1234")
-        .build();
+                .name("황인태")
+                .email("hwang@hwang.com")
+                .password("1234")
+                .build();
 
         authService.signUp(signUp);
 
         SignIn signIn = SignIn.builder()
-            .email("hwang@hwang.com")
-            .password("4321")
-        .build();
+                .email("hwang@hwang.com")
+                .password("4321")
+                .build();
 
         assertThrows(InvalidSignInException.class, () -> authService.signIn(signIn));
     }
-
 
     @Test
     @DisplayName("jwt key")
     void testJwtKey() {
         SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-        
+
         byte[] encoded = key.getEncoded();
 
         String strKey = Base64.getEncoder().encodeToString(encoded);
@@ -155,10 +156,10 @@ public class AuthServiceTest {
     @DisplayName("사용자 사용 여부 업데이트")
     void testUseAt() {
         SignUp signUp = SignUp.builder()
-            .name("황인태")
-            .email("hwang@hwang.com")
-            .password("1234")
-        .build();
+                .name("황인태")
+                .email("hwang@hwang.com")
+                .password("1234")
+                .build();
 
         UzikUser user = authService.signUp(signUp);
         assertTrue(user.isUseAt());
@@ -166,5 +167,39 @@ public class AuthServiceTest {
         UzikUser resultUser = userService.updateUseAt(user.getId(), false);
 
         assertTrue(resultUser.isUseAt() == false);
+    }
+
+    @Test
+    @DisplayName("사용자가 로그아웃을 하면 refreshToken을 지운다.")
+    void testSignOut() {
+        SignUp signUp = SignUp.builder()
+                .name("황인태")
+                .email("hwang@hwang.com")
+                .password("1234")
+                .build();
+
+        authService.signUp(signUp);
+
+        SignIn signIn = SignIn.builder()
+                .email("hwang@hwang.com")
+                .password("1234")
+                .build();
+
+        UzikUser signInUser = authService.signIn(signIn);
+        Long signInUserId = signInUser.getId();
+
+        String refreshToken = authService.createRefreshToken(signInUserId);
+        UzikUser findSignInUser = userService.findById(signInUserId).get();
+
+        SignOut signOut = SignOut.builder()
+                .email("hwang@hwang.com")
+                .password("1234")
+                .build();
+
+        UzikUser signOutUser = authService.signOut(signOut);
+        UzikUser findSignOutUser = userService.findById(signOutUser.getId()).get();
+
+        assertEquals(refreshToken, findSignInUser.getRefreshToken());
+        assertTrue(findSignOutUser.getRefreshToken().isBlank());
     }
 }
