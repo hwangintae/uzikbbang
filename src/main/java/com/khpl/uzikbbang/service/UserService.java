@@ -1,13 +1,13 @@
 package com.khpl.uzikbbang.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
 import com.khpl.uzikbbang.domain.UzikUser;
-import com.khpl.uzikbbang.exception.BadCredentialsException;
 import com.khpl.uzikbbang.repository.UserRepository;
 import com.khpl.uzikbbang.request.Page;
 
@@ -19,14 +19,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UzikUser findById(Long id) {
-        return userRepository.findById(id)
-            .orElseThrow(() -> new BadCredentialsException());
+    public Optional<UzikUser> findById(Long id) {
+        return userRepository.findById(id);
     }
 
-    public UzikUser findByEmail(String email) {
-        return userRepository.findByEmail(email)
-            .orElseThrow(() -> new BadCredentialsException());
+    public Optional<UzikUser> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public void save(UzikUser user) {
