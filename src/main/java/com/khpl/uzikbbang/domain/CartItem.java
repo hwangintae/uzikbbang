@@ -52,15 +52,12 @@ public class CartItem {
         this.registDt = LocalDate.now();
     }
 
-    public void addCnt() {
-        this.cnt += 1;
+    public void setCnt(int cnt) {
+        this.cnt = cnt;
         this.updtDt = LocalDate.now();
     }
 
-    public void subCnt() {
-        this.cnt -= 1;
-        this.updtDt = LocalDate.now();
-
-        if (this.cnt < 1) this.cnt = 1;
+    public void updateUseAt(boolean bool) {
+        this.useAt = bool;
     }
 }

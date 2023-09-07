@@ -22,12 +22,17 @@ public class CartItemService {
     // [v] 장바구니에 상품 추가 시, 이미 장바구니에 있는경우  cnt 만 올리기
     @Transactional
     public CartItem addItems(UzikUser user, Product product) {
-        Optional<CartItem> findCartItem = cartItemRepository.getCartItem(user.getId(), product.getId());
+        Optional<CartItem> optCartItem = cartItemRepository.getCartItem(user.getId(), product.getId());
 
-        if (findCartItem.isPresent()) {
-            findCartItem.get().addCnt();
+        if (optCartItem.isPresent()) {
+
+            CartItem cartItem = optCartItem.get();
+
+            int currCnt = cartItem.getCnt();
+
+            cartItem.setCnt(currCnt + 1);
             
-            return findCartItem.get();
+            return cartItem;
         } else {
             CartItem cartItem = CartItem.builder()
                 .user(user)
@@ -36,5 +41,9 @@ public class CartItemService {
 
             return cartItemRepository.save(cartItem);
         }
+    }
+
+    public Optional<CartItem> findById(Long cartItemId) {
+        return cartItemRepository.findById(cartItemId);
     }
 }
