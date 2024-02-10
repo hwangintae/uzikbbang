@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.khpl.uzikbbang.domain.Notice;
+import com.khpl.uzikbbang.entity.Notice;
 import com.khpl.uzikbbang.repository.NoticeRepository;
 import com.khpl.uzikbbang.request.NoticeCreate;
 import com.khpl.uzikbbang.request.NoticeEdit;

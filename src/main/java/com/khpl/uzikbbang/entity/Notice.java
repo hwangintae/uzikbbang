@@ -1,10 +1,13 @@
-package com.khpl.uzikbbang.domain;
+package com.khpl.uzikbbang.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+
+import com.khpl.uzikbbang.dto.NoticeEditor;
+import com.khpl.uzikbbang.dto.NoticeEditor.NoticeEditorBuilder;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,30 +17,32 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Gallery {
+public class Notice {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
-
+    
     @Lob
     private String content;
 
     @Builder
-    public Gallery(String title, String content) {
+    public Notice(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
-    public GalleryEditor.GalleryEditorBuilder toEditor() {
-        return GalleryEditor.builder()
+    public NoticeEditor.NoticeEditorBuilder toEditor() {
+        return NoticeEditor.builder()
             .title(this.title)
             .content(this.content);
     }
 
-    public void edit(GalleryEditor editor) {
+    public void edit(NoticeEditor editor) {
         this.title = editor.getTitle();
         this.content = editor.getContent();
     }
+
 }

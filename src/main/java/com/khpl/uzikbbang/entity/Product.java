@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.domain;
+package com.khpl.uzikbbang.entity;
 
 import java.util.List;
 
@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.khpl.uzikbbang.dto.ProductEditor;
+import com.khpl.uzikbbang.dto.ProductEditor.ProductEditorBuilder;
 
 import lombok.AccessLevel;
 import lombok.Builder;

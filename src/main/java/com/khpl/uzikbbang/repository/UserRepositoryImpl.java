@@ -1,10 +1,10 @@
 package com.khpl.uzikbbang.repository;
 
-import static com.khpl.uzikbbang.domain.QUzikUser.uzikUser;
+import static com.khpl.uzikbbang.entity.QUzikUser.uzikUser;
 
 import java.util.List;
 
-import com.khpl.uzikbbang.domain.UzikUser;
+import com.khpl.uzikbbang.entity.UzikUser;
 import com.khpl.uzikbbang.request.Page;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 

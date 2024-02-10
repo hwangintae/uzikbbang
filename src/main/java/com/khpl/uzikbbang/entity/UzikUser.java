@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.domain;
+package com.khpl.uzikbbang.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import com.khpl.uzikbbang.dto.Session;
+import com.khpl.uzikbbang.dto.UzikOrder;
 
 import lombok.AccessLevel;
 import lombok.Builder;

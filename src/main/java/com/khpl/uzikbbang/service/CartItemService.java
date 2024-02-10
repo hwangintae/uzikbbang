@@ -6,9 +6,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.khpl.uzikbbang.domain.CartItem;
-import com.khpl.uzikbbang.domain.Product;
-import com.khpl.uzikbbang.domain.UzikUser;
+import com.khpl.uzikbbang.entity.CartItem;
+import com.khpl.uzikbbang.entity.Product;
+import com.khpl.uzikbbang.entity.UzikUser;
 import com.khpl.uzikbbang.repository.CartItemRepository;
 
 import lombok.RequiredArgsConstructor;

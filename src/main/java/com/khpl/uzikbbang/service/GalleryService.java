@@ -8,9 +8,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.khpl.uzikbbang.domain.Gallery;
-import com.khpl.uzikbbang.domain.GalleryEditor;
-import com.khpl.uzikbbang.domain.GalleryEditor.GalleryEditorBuilder;
+import com.khpl.uzikbbang.dto.GalleryEditor;
+import com.khpl.uzikbbang.dto.GalleryEditor.GalleryEditorBuilder;
+import com.khpl.uzikbbang.entity.Gallery;
 import com.khpl.uzikbbang.repository.GalleryRepository;
 import com.khpl.uzikbbang.request.GalleryCreate;
 import com.khpl.uzikbbang.request.GalleryEdit;

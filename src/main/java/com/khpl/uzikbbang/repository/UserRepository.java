@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.khpl.uzikbbang.domain.UzikUser;
+import com.khpl.uzikbbang.entity.UzikUser;
 
 
 public interface UserRepository extends JpaRepository<UzikUser, Long>, UserRepositoryDsl{

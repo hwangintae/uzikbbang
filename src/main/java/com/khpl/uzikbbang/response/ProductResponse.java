@@ -1,6 +1,6 @@
 package com.khpl.uzikbbang.response;
 
-import com.khpl.uzikbbang.domain.Product;
+import com.khpl.uzikbbang.entity.Product;
 
 import lombok.Getter;
 

@@ -8,9 +8,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.khpl.uzikbbang.domain.Product;
-import com.khpl.uzikbbang.domain.ProductEditor;
-import com.khpl.uzikbbang.domain.ProductEditor.ProductEditorBuilder;
+import com.khpl.uzikbbang.dto.ProductEditor;
+import com.khpl.uzikbbang.dto.ProductEditor.ProductEditorBuilder;
+import com.khpl.uzikbbang.entity.Product;
 import com.khpl.uzikbbang.repository.ProductRepository;
 import com.khpl.uzikbbang.request.Page;
 import com.khpl.uzikbbang.request.ProductCreate;

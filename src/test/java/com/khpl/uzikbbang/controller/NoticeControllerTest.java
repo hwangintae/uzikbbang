@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.khpl.uzikbbang.domain.Notice;
+import com.khpl.uzikbbang.entity.Notice;
 import com.khpl.uzikbbang.repository.NoticeRepository;
 import com.khpl.uzikbbang.request.NoticeCreate;
 import com.khpl.uzikbbang.request.NoticeEdit;
@@ -48,17 +48,17 @@ public class NoticeControllerTest {
     @DisplayName("/notice post 요청시 DB에 값이 저장된다.")
     void postTest() throws Exception {
         NoticeCreate request = NoticeCreate.builder()
-                        .title("타이틀")
-                        .content("콘텐츠")
-                    .build();
+                .title("타이틀")
+                .content("콘텐츠")
+                .build();
 
         String jsonStr = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(post("/notice")
-                        .contentType(APPLICATION_JSON)
-                        .content(jsonStr))
-                    .andExpect(status().isOk())
-                    .andDo(print());
+                .contentType(APPLICATION_JSON)
+                .content(jsonStr))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
@@ -67,22 +67,22 @@ public class NoticeControllerTest {
 
         // given
         List<Notice> list = IntStream.range(0, 20)
-                                        .mapToObj(i -> Notice.builder()
-                                                        .title("타이틀" + i)
-                                                        .content("콘텐츠" + i)
-                                                    .build())
-                                    .collect(Collectors.toList());
+                .mapToObj(i -> Notice.builder()
+                        .title("타이틀" + i)
+                        .content("콘텐츠" + i)
+                        .build())
+                .collect(Collectors.toList());
 
         noticeRepository.saveAll(list);
 
         // expected
         mockMvc.perform(MockMvcRequestBuilders.get("/notice/list?page=0&size=10")
-                        .contentType(APPLICATION_JSON))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.length()", is(10)))
-                        .andExpect(jsonPath("$[0].title").value("타이틀19"))
-                        .andExpect(jsonPath("$[0].content").value("콘텐츠19"))
-                        .andDo(print());
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(10)))
+                .andExpect(jsonPath("$[0].title").value("타이틀19"))
+                .andExpect(jsonPath("$[0].content").value("콘텐츠19"))
+                .andDo(print());
     }
 
     @Test
@@ -93,22 +93,22 @@ public class NoticeControllerTest {
         Notice notice = Notice.builder()
                 .title("타이틀")
                 .content("콘텐츠 수정 전")
-            .build();
+                .build();
 
         noticeRepository.save(notice);
 
         NoticeEdit noticeEdit = NoticeEdit.builder()
-                    .title("타이틀 수정")
-                    .content("황인태")
+                .title("타이틀 수정")
+                .content("황인태")
                 .build();
 
         String jsonStr = objectMapper.writeValueAsString(noticeEdit);
 
         // expected
         mockMvc.perform(MockMvcRequestBuilders.patch("/notice/1")
-                        .contentType(APPLICATION_JSON)
-                        .content(jsonStr))
-                        .andExpect(status().isOk());
+                .contentType(APPLICATION_JSON)
+                .content(jsonStr))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -119,14 +119,14 @@ public class NoticeControllerTest {
         Notice notice = Notice.builder()
                 .title("타이틀")
                 .content("콘텐츠 수정 전")
-            .build();
+                .build();
 
         noticeRepository.save(notice);
 
         // expected
         mockMvc.perform(MockMvcRequestBuilders.delete("/notice/" + notice.getId())
-                        .contentType(APPLICATION_JSON))
-                        .andExpect(status().isOk());
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
 }

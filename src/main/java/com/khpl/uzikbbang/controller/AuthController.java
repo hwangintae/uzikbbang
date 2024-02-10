@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.khpl.uzikbbang.config.TokenParser;
 import com.khpl.uzikbbang.config.data.UserSession;
-import com.khpl.uzikbbang.domain.UzikUser;
+import com.khpl.uzikbbang.entity.UzikUser;
 import com.khpl.uzikbbang.request.RefreshRequest;
 import com.khpl.uzikbbang.request.SignIn;
 import com.khpl.uzikbbang.request.SignOut;

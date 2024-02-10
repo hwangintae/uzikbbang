@@ -1,10 +1,11 @@
 package com.khpl.uzikbbang.repository;
 
-import static com.khpl.uzikbbang.domain.QCartItem.cartItem;
+import static com.khpl.uzikbbang.entity.QCartItem.cartItem;
 
 import java.util.Optional;
 
-import com.khpl.uzikbbang.domain.CartItem;
+import com.khpl.uzikbbang.entity.CartItem;
+import com.khpl.uzikbbang.entity.QCartItem;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.domain;
+package com.khpl.uzikbbang.entity;
 
 import java.time.LocalDate;
 

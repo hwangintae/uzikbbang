@@ -1,6 +1,6 @@
 package com.khpl.uzikbbang.response;
 
-import com.khpl.uzikbbang.domain.Notice;
+import com.khpl.uzikbbang.entity.Notice;
 
 import lombok.Builder;
 import lombok.Getter;

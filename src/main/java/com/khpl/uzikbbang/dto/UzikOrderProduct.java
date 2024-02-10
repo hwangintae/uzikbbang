@@ -1,6 +1,4 @@
-package com.khpl.uzikbbang.domain;
-
-import java.util.UUID;
+package com.khpl.uzikbbang.dto;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import com.khpl.uzikbbang.entity.Product;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,20 +17,26 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Session {
+public class UzikOrderProduct {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String accessToken;
+    private Long Id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UzikUser user;
+    private UzikOrder order;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product product;
+
+    private int orderPrice;
+    private int cnt;
 
     @Builder
-    public Session(UzikUser user) {
-        this.accessToken = UUID.randomUUID().toString();
-        this.user = user;
+    public UzikOrderProduct(UzikOrder order, Product product, int orderPrice, int cnt) {
+        this.order = order;
+        this.product = product;
+        this.orderPrice = orderPrice;
+        this.cnt  = cnt;
     }
 }

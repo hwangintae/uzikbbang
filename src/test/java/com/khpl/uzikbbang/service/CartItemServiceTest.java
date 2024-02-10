@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.khpl.uzikbbang.domain.CartItem;
-import com.khpl.uzikbbang.domain.Product;
-import com.khpl.uzikbbang.domain.UzikUser;
+import com.khpl.uzikbbang.entity.CartItem;
+import com.khpl.uzikbbang.entity.Product;
+import com.khpl.uzikbbang.entity.UzikUser;
 import com.khpl.uzikbbang.repository.UserRepository;
 import com.khpl.uzikbbang.request.ProductCreate;
 import com.khpl.uzikbbang.request.SignUp;

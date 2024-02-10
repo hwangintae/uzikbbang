@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.domain;
+package com.khpl.uzikbbang.dto;
 
 import lombok.Builder;
 import lombok.Getter;

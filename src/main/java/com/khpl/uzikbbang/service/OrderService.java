@@ -7,10 +7,10 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.khpl.uzikbbang.domain.CartItem;
-import com.khpl.uzikbbang.domain.Product;
-import com.khpl.uzikbbang.domain.UzikOrderProduct;
-import com.khpl.uzikbbang.domain.UzikUser;
+import com.khpl.uzikbbang.dto.UzikOrderProduct;
+import com.khpl.uzikbbang.entity.CartItem;
+import com.khpl.uzikbbang.entity.Product;
+import com.khpl.uzikbbang.entity.UzikUser;
 import com.khpl.uzikbbang.repository.OrderProductRepository;
 import com.khpl.uzikbbang.repository.UserRepository;
 import com.khpl.uzikbbang.request.Page;

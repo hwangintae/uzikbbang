@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.khpl.uzikbbang.config.AppConfig;
 import com.khpl.uzikbbang.crypto.PasswordEncoder;
-import com.khpl.uzikbbang.domain.Session;
-import com.khpl.uzikbbang.domain.UzikUser;
+import com.khpl.uzikbbang.dto.Session;
+import com.khpl.uzikbbang.entity.UzikUser;
 import com.khpl.uzikbbang.exception.AlreadySignUpEmailException;
 import com.khpl.uzikbbang.exception.BadCredentialsException;
 import com.khpl.uzikbbang.exception.InvalidSignInException;

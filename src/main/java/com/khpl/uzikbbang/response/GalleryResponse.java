@@ -1,6 +1,6 @@
 package com.khpl.uzikbbang.response;
 
-import com.khpl.uzikbbang.domain.Gallery;
+import com.khpl.uzikbbang.entity.Gallery;
 
 import lombok.Builder;
 import lombok.Getter;

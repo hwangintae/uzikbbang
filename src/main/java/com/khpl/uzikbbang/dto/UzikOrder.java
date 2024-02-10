@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.domain;
+package com.khpl.uzikbbang.dto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,6 +13,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.khpl.uzikbbang.entity.CartItem;
+import com.khpl.uzikbbang.entity.Product;
+import com.khpl.uzikbbang.entity.UzikUser;
 
 import lombok.AccessLevel;
 import lombok.Getter;

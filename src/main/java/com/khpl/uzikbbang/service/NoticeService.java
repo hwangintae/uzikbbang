@@ -8,9 +8,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.khpl.uzikbbang.domain.Notice;
-import com.khpl.uzikbbang.domain.NoticeEditor;
-import com.khpl.uzikbbang.domain.NoticeEditor.NoticeEditorBuilder;
+import com.khpl.uzikbbang.dto.NoticeEditor;
+import com.khpl.uzikbbang.dto.NoticeEditor.NoticeEditorBuilder;
+import com.khpl.uzikbbang.entity.Notice;
 import com.khpl.uzikbbang.repository.NoticeRepository;
 import com.khpl.uzikbbang.request.NoticeCreate;
 import com.khpl.uzikbbang.request.NoticeEdit;

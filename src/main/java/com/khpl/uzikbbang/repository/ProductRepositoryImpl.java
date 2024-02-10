@@ -1,10 +1,10 @@
 package com.khpl.uzikbbang.repository;
 
-import static com.khpl.uzikbbang.domain.QProduct.product;
+import static com.khpl.uzikbbang.entity.QProduct.product;
 
 import java.util.List;
 
-import com.khpl.uzikbbang.domain.Product;
+import com.khpl.uzikbbang.entity.Product;
 import com.khpl.uzikbbang.request.Page;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 

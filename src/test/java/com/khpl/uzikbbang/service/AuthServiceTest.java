@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Base64;
-import java.util.Optional;
 
 import javax.crypto.SecretKey;
 
@@ -17,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.khpl.uzikbbang.crypto.PasswordEncoder;
-import com.khpl.uzikbbang.domain.Session;
-import com.khpl.uzikbbang.domain.UzikUser;
+import com.khpl.uzikbbang.dto.Session;
+import com.khpl.uzikbbang.entity.UzikUser;
 import com.khpl.uzikbbang.exception.InvalidSignInException;
 import com.khpl.uzikbbang.repository.UserRepository;
 import com.khpl.uzikbbang.request.SignIn;
