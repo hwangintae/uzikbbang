@@ -1,12 +1,10 @@
-package com.khpl.uzikbbang.entity;
+package com.khpl.uzikbbang.domain.menu;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-
-import com.khpl.uzikbbang.dto.MenuEdit;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,26 +20,21 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
-
     private String title;
 
     @Lob
     private String content;
     private int price;
-    private boolean useAt;
-
-    private String mainGroup;
-    private String subGroup;
+    private MenuUseAt menuUseAt;
 
     private String option;
 
     @Builder
-    public Menu(MenuEdit menuEdit) {
-        this.title = menuEdit.getTitle();
-        this.content = menuEdit.getContent();
-        this.price = menuEdit.getPrice();
-        this.useAt = true;
-        this.option = String.join(",", menuEdit.getOptions());
+    public Menu(String title, String content, int price, MenuUseAt menuUseAt, String option) {
+        this.title = title;
+        this.content = content;
+        this.price = price;
+        this.menuUseAt = menuUseAt;
+        this.option = option;
     }
 }

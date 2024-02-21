@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.khpl.uzikbbang.crypto.PasswordEncoder;
+import com.khpl.uzikbbang.config.crypto.PasswordEncoder;
 import com.khpl.uzikbbang.dto.Session;
 import com.khpl.uzikbbang.entity.UzikUser;
 import com.khpl.uzikbbang.exception.InvalidSignInException;

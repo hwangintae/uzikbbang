@@ -1,8 +1,7 @@
-package com.khpl.uzikbbang.repository;
+package com.khpl.uzikbbang.domain.whisky;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.khpl.uzikbbang.entity.Whisky;
 import java.util.List;
 
 

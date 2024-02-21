@@ -1,11 +1,9 @@
-package com.khpl.uzikbbang.entity;
+package com.khpl.uzikbbang.domain.whisky;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import com.khpl.uzikbbang.request.WhiskyEdit;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -28,12 +26,12 @@ public class Whisky {
     private String style;
 
     @Builder
-    public Whisky(Long menuId, WhiskyEdit whiskyEdit) {
+    public Whisky(Long menuId, String country, String region, String distillery, int age, String style) {
         this.menuId = menuId;
-        this.country = whiskyEdit.getCountry();
-        this.region = whiskyEdit.getRegion();
-        this.distillery = whiskyEdit.getDistillery();
-        this.age = whiskyEdit.getAge();
-        this.style = whiskyEdit.getStyle();
+        this.country = country;
+        this.region = region;
+        this.distillery = distillery;
+        this.age = age;
+        this.style = style;
     }
 }

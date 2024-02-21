@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.crypto;
+package com.khpl.uzikbbang.config.crypto;
 
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.stereotype.Component;

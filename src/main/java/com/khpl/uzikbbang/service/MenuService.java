@@ -2,9 +2,7 @@ package com.khpl.uzikbbang.service;
 
 import org.springframework.stereotype.Service;
 
-import com.khpl.uzikbbang.dto.MenuEdit;
-import com.khpl.uzikbbang.entity.Menu;
-import com.khpl.uzikbbang.repository.MenuRepository;
+import com.khpl.uzikbbang.domain.menu.MenuRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,13 +11,9 @@ import lombok.RequiredArgsConstructor;
 public class MenuService {
     private final MenuRepository menuRepository;
 
-    public Long save(MenuEdit menuEdit) {
-
-        Menu menu = Menu.builder()
-                .menuEdit(menuEdit)
-                .build();
+    public Long save(MenuServiceEdit menuServiceEdit) {
         
-        return menuRepository.save(menu).getId();
+        return menuRepository.save(menuServiceEdit.toEntity()).getId();
     }
     
 }
