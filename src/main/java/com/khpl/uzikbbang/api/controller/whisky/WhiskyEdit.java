@@ -1,6 +1,8 @@
-package com.khpl.uzikbbang.request;
+package com.khpl.uzikbbang.api.controller.whisky;
 
 import java.util.List;
+
+import com.khpl.uzikbbang.api.service.whisky.request.WhiskyServiceEdit;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -30,5 +32,16 @@ public class WhiskyEdit {
         this.distillery = distillery;
         this.age = age;
         this.style = style;
+    }
+
+    public WhiskyServiceEdit toServiceEdit(Long menuId) {
+        return WhiskyServiceEdit.builder()
+                .menuId(menuId)
+                .country(this.country)
+                .region(this.region)
+                .distillery(this.distillery)
+                .age(this.age)
+                .style(this.style)
+                .build();
     }
 }

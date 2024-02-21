@@ -9,11 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.khpl.uzikbbang.api.controller.whisky.WhiskyEdit;
 import com.khpl.uzikbbang.api.service.whisky.WhiskyService;
+import com.khpl.uzikbbang.api.service.whisky.request.WhiskyServiceEdit;
 import com.khpl.uzikbbang.domain.menu.MenuRepository;
+import com.khpl.uzikbbang.domain.whisky.Whisky;
 import com.khpl.uzikbbang.dto.MenuEdit;
-import com.khpl.uzikbbang.request.WhiskyEdit;
 import com.khpl.uzikbbang.service.MenuService;
+
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 public class MenuServiceTest {
@@ -33,6 +37,7 @@ public class MenuServiceTest {
     @DisplayName("위스키를 메뉴에 추가한다.")
     void save() {
 
+        // given
         List<String> options = new ArrayList<>();
         
         options.add("glass");
@@ -57,16 +62,18 @@ public class MenuServiceTest {
                 .options(whiskyEdit.getOptions())
                 .build();
 
+        // when
         Long menuId = menuService.save(menuEdit.toServiceEdit());
+        whiskyService.save(whiskyEdit.toServiceEdit(menuId));
 
-        // whiskyService.save(menuId, whiskyEdit);
+        // then
+        List<Whisky> whiskies = whiskyService.findByMenuId(menuId);
 
-        // List<Whisky> whiskies = whiskyService.findByMenuId(menuId);
-        
-
-        // assertEquals(1, menuId);
-        // assertEquals(1, whiskies.size());
-        // assertEquals(30, whiskies.get(0).getAge());
+        assertThat(menuId).isEqualTo(1);
+        assertThat(whiskies).hasSize(1);
+        assertThat(whiskies.get(0))
+                .extracting("country", "region", "distillery", "age", "style")
+                .contains("인태나라", "인태시",  "인태증류소", 30, "개쩜");
 
     }
 }

@@ -1,26 +1,39 @@
 package com.khpl.uzikbbang.api.service.whisky.request;
 
-import java.util.List;
-
 import com.khpl.uzikbbang.domain.whisky.Whisky;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class WhiskyServiceEdit {
 
-    private String title;
-    private String content;
-    private int price;
-    private List<String> options;
+    private Long menuId;
     private String country;
     private String region;
     private String distillery;
     private int age;
     private String style;
 
+    @Builder
+    public WhiskyServiceEdit(Long menuId, String country, String region, String distillery, int age, String style) {
+        this.menuId = menuId;
+        this.country = country;
+        this.region = region;
+        this.distillery = distillery;
+        this.age = age;
+        this.style = style;
+    }
+
     public Whisky toEntity() {
-        return null;
+        return Whisky.builder()
+                .menuId(this.menuId)
+                .country(this.country)
+                .region(this.region)
+                .distillery(this.distillery)
+                .age(this.age)
+                .style(this.style)
+                .build();
     }
 
 }
