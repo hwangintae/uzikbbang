@@ -20,6 +20,7 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long productId;
     private String title;
 
     @Lob
@@ -30,7 +31,8 @@ public class Menu {
     private String option;
 
     @Builder
-    public Menu(String title, String content, int price, MenuUseAt menuUseAt, String option) {
+    public Menu(Long productId, String title, String content, int price, MenuUseAt menuUseAt, String option) {
+        this.productId = productId;
         this.title = title;
         this.content = content;
         this.price = price;

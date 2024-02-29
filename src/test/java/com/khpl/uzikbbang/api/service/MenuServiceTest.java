@@ -16,8 +16,11 @@ import com.khpl.uzikbbang.api.controller.whisky.WhiskyEdit;
 import com.khpl.uzikbbang.api.service.menu.MenuService;
 import com.khpl.uzikbbang.api.service.whisky.WhiskyService;
 import com.khpl.uzikbbang.domain.Level;
+import com.khpl.uzikbbang.domain.menu.Menu;
 import com.khpl.uzikbbang.domain.menu.MenuRepository;
+import com.khpl.uzikbbang.domain.menu.MenuUseAt;
 import com.khpl.uzikbbang.domain.whisky.Whisky;
+import com.khpl.uzikbbang.domain.whisky.WhiskyRepository;
 
 @SpringBootTest
 public class MenuServiceTest {
@@ -25,12 +28,19 @@ public class MenuServiceTest {
     @Autowired
     MenuRepository menuRepository;
 
-    @Autowired MenuService menuService;
-    @Autowired WhiskyService whiskyService;
+    @Autowired
+    MenuService menuService;
+
+    @Autowired
+    WhiskyService whiskyService;
+
+    @Autowired
+    WhiskyRepository whiskyRepository;
 
     @BeforeEach
     void clean() {
         menuRepository.deleteAll();
+        whiskyRepository.deleteAllInBatch();
     }
 
     @Test
@@ -38,16 +48,8 @@ public class MenuServiceTest {
     void save() {
 
         // given
-        List<String> options = new ArrayList<>();
-        
-        options.add("glass");
-        options.add("bottle");
-
-        WhiskyEdit whiskyEdit = WhiskyEdit.builder()
-                .title("위스키1")
-                .content("비싼 위스키")
-                .price(100_000)
-                .options(options)
+        //given
+        Whisky whisky = Whisky.builder()
                 .country("인태나라")
                 .region("인태시")
                 .distillery("인태증류소")
@@ -56,25 +58,25 @@ public class MenuServiceTest {
                 .level(Level.JUINOR)
                 .build();
 
-        MenuEdit menuEdit = MenuEdit.builder()
-                .title(whiskyEdit.getTitle())
-                .content(whiskyEdit.getContent())
-                .price(whiskyEdit.getPrice())
-                .options(whiskyEdit.getOptions())
+        //when
+        Whisky result = whiskyRepository.save(whisky);
+
+        String option = String.join(",", List.of("glass", "bottle"));
+        Menu menu = Menu.builder()
+                .productId(result.getId())
+                .title("위스키1")
+                .content("비싼 위스키")
+                .price(100_000)
+                .option(option)
+                .menuUseAt(MenuUseAt.Y)
                 .build();
 
-        // when
-        Long menuId = menuService.save(menuEdit.toServiceEdit());
-        whiskyService.save(whiskyEdit.toServiceEdit(menuId));
-
         // then
-        List<Whisky> whiskies = whiskyService.findByMenuId(menuId);
+        Menu save = menuRepository.save(menu);
 
-        assertThat(menuId).isEqualTo(1);
-        assertThat(whiskies).hasSize(1);
-        assertThat(whiskies.get(0))
-                .extracting("country", "region", "distillery", "age", "style", "level")
-                .contains("인태나라", "인태시",  "인태증류소", 30, "개쩜", Level.JUINOR);
+        assertThat(save)
+                .extracting("title", "content", "price", "option", "menuUseAt")
+                .contains("위스키1", "비싼 위스키", 100_000, option, MenuUseAt.Y);
 
     }
 }
