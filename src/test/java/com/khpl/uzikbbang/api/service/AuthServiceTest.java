@@ -1,9 +1,10 @@
-package com.khpl.uzikbbang.service;
+package com.khpl.uzikbbang.api.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Base64;
 
@@ -22,6 +23,7 @@ import com.khpl.uzikbbang.api.controller.auth.request.SignUp;
 import com.khpl.uzikbbang.api.service.auth.AuthService;
 import com.khpl.uzikbbang.api.service.auth.UserService;
 import com.khpl.uzikbbang.config.crypto.PasswordEncoder;
+import com.khpl.uzikbbang.domain.Level;
 import com.khpl.uzikbbang.domain.user.UserRepository;
 import com.khpl.uzikbbang.domain.user.UzikUser;
 import com.khpl.uzikbbang.exception.InvalidSignInException;
@@ -63,6 +65,20 @@ public class AuthServiceTest {
         assertEquals("황인태", user.getName());
         assertEquals("hwang@hwang.com", user.getEmail());
         assertTrue(passwordEncoder.matches("1234", user.getPassword()));
+    }
+
+    @Test
+    @DisplayName("처음 가입한 사람의 level은 BEGINNER 이다.")
+    void testBeginner() {
+        SignUp signUp = SignUp.builder()
+                .name("황인태")
+                .email("hwang@hwang.com")
+                .password("1234")
+                .build();
+
+        UzikUser user = authService.signUp(signUp);
+
+        assertThat(user.getLevel()).isEqualTo(Level.BEGINNER);
     }
 
     @Test
@@ -203,4 +219,6 @@ public class AuthServiceTest {
         assertEquals(refreshToken, findSignInUser.getRefreshToken());
         assertTrue(findSignOutUser.getRefreshToken().isBlank());
     }
+
+    
 }

@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.controller;
+package com.khpl.uzikbbang.api.controller;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.MediaType.APPLICATION_JSON;

@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.controller;
+package com.khpl.uzikbbang.api.controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;

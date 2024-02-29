@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.service;
+package com.khpl.uzikbbang.api.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,16 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.khpl.uzikbbang.api.controller.Page;
 import com.khpl.uzikbbang.api.controller.auth.request.SignUp;
-import com.khpl.uzikbbang.api.controller.order.UzikOrderProduct;
-import com.khpl.uzikbbang.api.controller.product.ProductCreate;
+import com.khpl.uzikbbang.api.controller.food.FoodCreate;
 import com.khpl.uzikbbang.api.service.auth.AuthService;
-import com.khpl.uzikbbang.api.service.cart.CartItemService;
+import com.khpl.uzikbbang.api.service.food.FoodService;
 import com.khpl.uzikbbang.api.service.order.OrderService;
-import com.khpl.uzikbbang.api.service.product.ProductService;
+import com.khpl.uzikbbang.domain.food.Food;
+import com.khpl.uzikbbang.domain.food.FoodRepository;
 import com.khpl.uzikbbang.domain.order.OrderProductRepository;
 import com.khpl.uzikbbang.domain.order.OrderRepository;
-import com.khpl.uzikbbang.domain.product.Product;
-import com.khpl.uzikbbang.domain.product.ProductRepository;
+import com.khpl.uzikbbang.domain.order.UzikOrderProduct;
 import com.khpl.uzikbbang.domain.user.UserRepository;
 import com.khpl.uzikbbang.domain.user.UzikUser;
 
@@ -33,13 +32,13 @@ public class OrderServiceTest {
     private AuthService authService;
 
     @Autowired
-    private ProductService productService;
+    private FoodService foodService;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private FoodRepository foodRepository;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -50,13 +49,10 @@ public class OrderServiceTest {
     @Autowired
     private OrderService orderService;
 
-    @Autowired
-    private CartItemService cartItemService;
-
     @BeforeEach
     void clean() {
         userRepository.deleteAll();
-        productRepository.deleteAll();
+        foodRepository.deleteAll();
         orderRepository.deleteAll();
         orderProductRepository.deleteAll();
     }
@@ -83,7 +79,7 @@ public class OrderServiceTest {
         ingredients.add("우유");
         allergies.add("우유");
 
-        ProductCreate productCreate = ProductCreate.builder()
+        FoodCreate foodCreate = FoodCreate.builder()
                     .name("우직한빵")
                     .kind("마들렌")
                     .addr("대흥동")
@@ -103,9 +99,7 @@ public class OrderServiceTest {
                     .allergies(allergies)
                 .build();
 
-        Product product = productService.add(productCreate);
-
-        orderService.addOrderProducts(user, product, 100);
+        Food food = foodService.add(foodCreate);
 
         Page page = Page.builder().page(1).size(10).build();
 
@@ -113,54 +107,5 @@ public class OrderServiceTest {
         
         assertEquals(1, orderProducts.size());
         assertEquals(100, orderProducts.get(0).getCnt());
-        assertEquals(product.getId(), orderProducts.get(0).getProduct().getId());
-    }
-
-    @Test
-    @DisplayName("장바구니 상품 주문 테스트")
-    void testOrderByProduct2() {
-        SignUp signUp = SignUp.builder()
-            .name("황인태")
-            .email("hwang@hwang.com")
-            .password("1234")
-        .build();
-
-        UzikUser user = authService.signUp(signUp);
-
-        List<String> ingredients = new ArrayList<>();
-        List<String> allergies = new ArrayList<>();
-
-        ingredients.add("우유");
-        allergies.add("우유");
-
-        ProductCreate productCreate = ProductCreate.builder()
-                    .name("우직한빵")
-                    .kind("마들렌")
-                    .addr("대흥동")
-                    .exprirationDate(5)
-                    .cost(5000)
-                    .wight(125D)
-                    .calories(1000D)
-                    .sodium(1000D)
-                    .totalCarbo(1000D)
-                    .sugars(1000D)
-                    .totalFat(1000D)
-                    .transFat(1000D)
-                    .saturatedFat(1000D)
-                    .cholesterol(1000D)
-                    .protein(1000D)
-                    .ingredients(ingredients)
-                    .allergies(allergies)
-                .build();
-
-        Product product = productService.add(productCreate);
-
-        cartItemService.addItems(user, product);
-
-
-
-
-
-        
     }
 }

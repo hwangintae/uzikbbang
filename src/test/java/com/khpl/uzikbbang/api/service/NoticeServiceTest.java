@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.service;
+package com.khpl.uzikbbang.api.service;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;

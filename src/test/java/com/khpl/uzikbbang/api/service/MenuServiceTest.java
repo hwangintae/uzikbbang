@@ -15,6 +15,7 @@ import com.khpl.uzikbbang.api.controller.menu.MenuEdit;
 import com.khpl.uzikbbang.api.controller.whisky.WhiskyEdit;
 import com.khpl.uzikbbang.api.service.menu.MenuService;
 import com.khpl.uzikbbang.api.service.whisky.WhiskyService;
+import com.khpl.uzikbbang.domain.Level;
 import com.khpl.uzikbbang.domain.menu.MenuRepository;
 import com.khpl.uzikbbang.domain.whisky.Whisky;
 
@@ -52,6 +53,7 @@ public class MenuServiceTest {
                 .distillery("인태증류소")
                 .age(30)
                 .style("개쩜")
+                .level(Level.JUINOR)
                 .build();
 
         MenuEdit menuEdit = MenuEdit.builder()
@@ -71,8 +73,8 @@ public class MenuServiceTest {
         assertThat(menuId).isEqualTo(1);
         assertThat(whiskies).hasSize(1);
         assertThat(whiskies.get(0))
-                .extracting("country", "region", "distillery", "age", "style")
-                .contains("인태나라", "인태시",  "인태증류소", 30, "개쩜");
+                .extracting("country", "region", "distillery", "age", "style", "level")
+                .contains("인태나라", "인태시",  "인태증류소", 30, "개쩜", Level.JUINOR);
 
     }
 }
