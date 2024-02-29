@@ -1,5 +1,7 @@
 package com.khpl.uzikbbang.domain.user;
 
+import static com.khpl.uzikbbang.domain.user.QUzikUser.uzikUser;
+
 import java.util.List;
 
 import com.khpl.uzikbbang.api.controller.Page;
@@ -13,8 +15,6 @@ public class UserRepositoryImpl implements UserRepositoryDsl {
 
     @Override
     public List<UzikUser> getList(Page page) {
-        QUzikUser uzikUser = QUzikUser.uzikUser;
-        
         return jpaQueryFactory.selectFrom(uzikUser)
             .limit(page.getSize())
             .offset(page.getOffset())

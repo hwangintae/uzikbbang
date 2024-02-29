@@ -1,6 +1,6 @@
 package com.khpl.uzikbbang.domain.product;
 
-import static com.khpl.uzikbbang.entity.QProduct.product;
+import static com.khpl.uzikbbang.domain.product.QProduct.product;
 
 import java.util.List;
 
@@ -15,7 +15,6 @@ public class ProductRepositoryImpl implements ProductRepositoryDsl {
 
     @Override
     public List<Product> getList(Page page) {
-
         return jpaQueryFactory.selectFrom(product)
                             .limit(page.getSize())
                             .offset(page.getOffset())
