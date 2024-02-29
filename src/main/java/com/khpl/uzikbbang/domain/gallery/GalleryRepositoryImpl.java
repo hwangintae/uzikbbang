@@ -14,13 +14,12 @@ public class GalleryRepositoryImpl implements GalleryRepositoryDsl{
 
     @Override
     public List<Gallery> getList(Page page) {
-
-        QGallery gallery = QGallery.gallery;
-        return jpaQueryFactory.selectFrom(gallery)
-                .limit(page.getSize())
-                .offset(page.getOffset())
-                .orderBy(gallery.id.desc())
-            .fetch();
+        // return jpaQueryFactory.selectFrom(gallery)
+        //         .limit(page.getSize())
+        //         .offset(page.getOffset())
+        //         .orderBy(gallery.id.desc())
+        //     .fetch();
+        return null;
     }
     
 }

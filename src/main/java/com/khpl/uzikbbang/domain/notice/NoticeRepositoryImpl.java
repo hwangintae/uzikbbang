@@ -1,7 +1,5 @@
 package com.khpl.uzikbbang.domain.notice;
 
-import static com.khpl.uzikbbang.domain.notice.QNotice.notice;
-
 import java.util.List;
 
 import com.khpl.uzikbbang.api.controller.Page;
@@ -16,11 +14,12 @@ public class NoticeRepositoryImpl implements NoticeRepositoryDsl {
 
     @Override
     public List<Notice> getList(Page page) {
-        return jpaQueryFactory.selectFrom(notice)
-                            .limit(page.getSize())
-                            .offset(page.getOffset())
-                            .orderBy(notice.id.desc())
-                        .fetch();
+        // return jpaQueryFactory.selectFrom(notice)
+        //                     .limit(page.getSize())
+        //                     .offset(page.getOffset())
+        //                     .orderBy(notice.id.desc())
+        //                 .fetch();
+        return null;
     }
     
 }

@@ -1,6 +1,6 @@
 package com.khpl.uzikbbang.domain.food;
 
-import static com.khpl.uzikbbang.domain.product.QProduct.product;
+import static com.khpl.uzikbbang.domain.product.QFood.food;
 
 import java.util.List;
 
@@ -15,10 +15,10 @@ public class FoodRepositoryImpl implements FoodRepositoryDsl {
 
     @Override
     public List<Food> getList(Page page) {
-        return jpaQueryFactory.selectFrom(product)
+        return jpaQueryFactory.selectFrom(food)
                             .limit(page.getSize())
                             .offset(page.getOffset())
-                            .orderBy(product.id.desc())
+                            .orderBy(food.id.desc())
                         .fetch();
     }
 }
