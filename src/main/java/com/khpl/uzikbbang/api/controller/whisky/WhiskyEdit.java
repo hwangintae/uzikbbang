@@ -3,6 +3,7 @@ package com.khpl.uzikbbang.api.controller.whisky;
 import java.util.List;
 
 import com.khpl.uzikbbang.api.service.whisky.request.WhiskyServiceEdit;
+import com.khpl.uzikbbang.domain.Level;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +21,12 @@ public class WhiskyEdit {
     private String distillery;
     private int age;
     private String style;
+    private Level level;
+
+    
 
     @Builder
-    public WhiskyEdit(String title, String content, int price, List<String> options, String country, String region, String distillery, int age, String style) {
+    public WhiskyEdit(String title, String content, int price, List<String> options, String country, String region, String distillery, int age, String style, Level level) {
         this.title = title;
         this.content = content;
         this.price = price;
@@ -32,6 +36,7 @@ public class WhiskyEdit {
         this.distillery = distillery;
         this.age = age;
         this.style = style;
+        this.level = level;
     }
 
     public WhiskyServiceEdit toServiceEdit(Long menuId) {
@@ -42,6 +47,7 @@ public class WhiskyEdit {
                 .distillery(this.distillery)
                 .age(this.age)
                 .style(this.style)
+                .level(this.level)
                 .build();
     }
 }

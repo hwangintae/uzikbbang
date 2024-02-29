@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.khpl.uzikbbang.domain.Level;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,14 +26,16 @@ public class Whisky {
     private String distillery;
     private int age;
     private String style;
+    private Level level;
 
     @Builder
-    public Whisky(Long menuId, String country, String region, String distillery, int age, String style) {
+    public Whisky(Long menuId, String country, String region, String distillery, int age, String style, Level level) {
         this.menuId = menuId;
         this.country = country;
         this.region = region;
         this.distillery = distillery;
         this.age = age;
         this.style = style;
+        this.level = level;
     }
 }
