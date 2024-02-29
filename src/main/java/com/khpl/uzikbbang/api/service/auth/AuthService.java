@@ -16,7 +16,7 @@ import com.khpl.uzikbbang.api.controller.auth.request.SignOut;
 import com.khpl.uzikbbang.api.controller.auth.request.SignUp;
 import com.khpl.uzikbbang.config.AppConfig;
 import com.khpl.uzikbbang.config.crypto.PasswordEncoder;
-import com.khpl.uzikbbang.domain.user.UzikUser;
+import com.khpl.uzikbbang.domain.user.User;
 import com.khpl.uzikbbang.exception.AlreadySignUpEmailException;
 import com.khpl.uzikbbang.exception.BadCredentialsException;
 import com.khpl.uzikbbang.exception.InvalidSignInException;
@@ -33,7 +33,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AppConfig appConfig;
 
-    public UzikUser signUp(SignUp signUp) {
+    public User signUp(SignUp signUp) {
         String email = signUp.getEmail();
 
         // 이메일 중복 체크
@@ -43,7 +43,7 @@ public class AuthService {
 
         String password = passwordEncoder.encrypt(signUp.getPassword());
 
-        UzikUser user = UzikUser.builder()
+        User user = User.builder()
                 .name(signUp.getName())
                 .email(email)
                 .password(password)
@@ -55,9 +55,9 @@ public class AuthService {
     }
 
     @Transactional
-    public UzikUser signIn(SignIn signIn) {
+    public User signIn(SignIn signIn) {
 
-        UzikUser user = userService.findByEmail(signIn.getEmail())
+        User user = userService.findByEmail(signIn.getEmail())
                 .orElseThrow(InvalidSignInException::new);
 
         // 차단된 사용자 확인
@@ -78,23 +78,23 @@ public class AuthService {
 
     @Transactional
     public Session getSession(Long userId) {
-        UzikUser user = userService.findById(userId)
+        User user = userService.findById(userId)
                 .orElseThrow(InvalidSignInException::new);
 
         return user.addSession();
     }
 
     @Transactional
-    public UzikUser signOut(SignOut signOut) {
+    public User signOut(SignOut signOut) {
         String email = signOut.getEmail();
 
-        Optional<UzikUser> optUser = userService.findByEmail(email);
+        Optional<User> optUser = userService.findByEmail(email);
 
         if (optUser.isPresent() == false) {
             throw new Unauthorized();
         }
 
-        UzikUser user = optUser.get();
+        User user = optUser.get();
 
         String password = user.getPassword();
         boolean isMatches = passwordEncoder.matches(signOut.getPassword(), password);
@@ -134,7 +134,7 @@ public class AuthService {
                 .setExpiration(new Date(now + sevenDays))
                 .compact();
 
-        UzikUser user = userService.findById(userId)
+        User user = userService.findById(userId)
                 .orElseThrow(BadCredentialsException::new);
 
         user.setRefreshToken(refreshToken);

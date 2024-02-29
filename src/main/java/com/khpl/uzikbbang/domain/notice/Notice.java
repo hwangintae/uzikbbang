@@ -7,7 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 
 import com.khpl.uzikbbang.api.controller.notice.NoticeEditor;
-import com.khpl.uzikbbang.api.controller.notice.NoticeEditor.NoticeEditorBuilder;
 
 import lombok.AccessLevel;
 import lombok.Builder;

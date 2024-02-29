@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.khpl.uzikbbang.domain.user.UzikUser;
+import com.khpl.uzikbbang.domain.user.User;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -28,10 +28,10 @@ public class Session {
     private String accessToken;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UzikUser user;
+    private User user;
 
     @Builder
-    public Session(UzikUser user) {
+    public Session(User user) {
         this.accessToken = UUID.randomUUID().toString();
         this.user = user;
     }

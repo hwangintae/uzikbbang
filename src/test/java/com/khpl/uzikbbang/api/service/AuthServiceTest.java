@@ -25,7 +25,7 @@ import com.khpl.uzikbbang.api.service.auth.UserService;
 import com.khpl.uzikbbang.config.crypto.PasswordEncoder;
 import com.khpl.uzikbbang.domain.Level;
 import com.khpl.uzikbbang.domain.user.UserRepository;
-import com.khpl.uzikbbang.domain.user.UzikUser;
+import com.khpl.uzikbbang.domain.user.User;
 import com.khpl.uzikbbang.exception.InvalidSignInException;
 
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -60,7 +60,7 @@ public class AuthServiceTest {
                 .password("1234")
                 .build();
 
-        UzikUser user = authService.signUp(signUp);
+        User user = authService.signUp(signUp);
 
         assertEquals("황인태", user.getName());
         assertEquals("hwang@hwang.com", user.getEmail());
@@ -76,7 +76,7 @@ public class AuthServiceTest {
                 .password("1234")
                 .build();
 
-        UzikUser user = authService.signUp(signUp);
+        User user = authService.signUp(signUp);
 
         assertThat(user.getLevel()).isEqualTo(Level.BEGINNER);
     }
@@ -90,7 +90,7 @@ public class AuthServiceTest {
                 .password("1234")
                 .build();
 
-        UzikUser user = authService.signUp(signUp);
+        User user = authService.signUp(signUp);
 
         assertEquals("황인태", user.getName());
         assertEquals("hwang@hwang.com", user.getEmail());
@@ -113,7 +113,7 @@ public class AuthServiceTest {
                 .password("1234")
                 .build();
 
-        UzikUser resultUser = authService.signIn(signIn);
+        User resultUser = authService.signIn(signIn);
         Session session = authService.getSession(resultUser.getId());
 
         assertEquals(resultUser.getId(), session.getUser().getId());
@@ -178,10 +178,10 @@ public class AuthServiceTest {
                 .password("1234")
                 .build();
 
-        UzikUser user = authService.signUp(signUp);
+        User user = authService.signUp(signUp);
         assertTrue(user.isUseAt());
 
-        UzikUser resultUser = userService.updateUseAt(user.getId(), false);
+        User resultUser = userService.updateUseAt(user.getId(), false);
 
         assertTrue(resultUser.isUseAt() == false);
     }
@@ -202,19 +202,19 @@ public class AuthServiceTest {
                 .password("1234")
                 .build();
 
-        UzikUser signInUser = authService.signIn(signIn);
+        User signInUser = authService.signIn(signIn);
         Long signInUserId = signInUser.getId();
 
         String refreshToken = authService.createRefreshToken(signInUserId);
-        UzikUser findSignInUser = userService.findById(signInUserId).get();
+        User findSignInUser = userService.findById(signInUserId).get();
 
         SignOut signOut = SignOut.builder()
                 .email("hwang@hwang.com")
                 .password("1234")
                 .build();
 
-        UzikUser signOutUser = authService.signOut(signOut);
-        UzikUser findSignOutUser = userService.findById(signOutUser.getId()).get();
+        User signOutUser = authService.signOut(signOut);
+        User findSignOutUser = userService.findById(signOutUser.getId()).get();
 
         assertEquals(refreshToken, findSignInUser.getRefreshToken());
         assertTrue(findSignOutUser.getRefreshToken().isBlank());

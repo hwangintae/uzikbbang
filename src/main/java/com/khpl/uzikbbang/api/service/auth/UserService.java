@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.khpl.uzikbbang.api.controller.Page;
 import com.khpl.uzikbbang.domain.user.UserRepository;
-import com.khpl.uzikbbang.domain.user.UzikUser;
+import com.khpl.uzikbbang.domain.user.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,25 +19,25 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public Optional<UzikUser> findById(Long id) {
+    public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
-    public Optional<UzikUser> findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public void save(UzikUser user) {
+    public void save(User user) {
         userRepository.save(user);
     }
 
-    public List<UzikUser> getList(Page page) {
+    public List<User> getList(Page page) {
         return userRepository.getList(page);
     }
 
     @Transactional
-    public UzikUser updateUseAt(Long id, boolean bool) {
-        UzikUser user = userRepository.findById(id).get();
+    public User updateUseAt(Long id, boolean bool) {
+        User user = userRepository.findById(id).get();
         user.updateUseAt(bool);
 
         return user;

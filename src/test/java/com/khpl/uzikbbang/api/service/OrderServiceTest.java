@@ -23,7 +23,7 @@ import com.khpl.uzikbbang.domain.order.OrderProductRepository;
 import com.khpl.uzikbbang.domain.order.OrderRepository;
 import com.khpl.uzikbbang.domain.order.UzikOrderProduct;
 import com.khpl.uzikbbang.domain.user.UserRepository;
-import com.khpl.uzikbbang.domain.user.UzikUser;
+import com.khpl.uzikbbang.domain.user.User;
 
 @SpringBootTest
 public class OrderServiceTest {
@@ -71,7 +71,7 @@ public class OrderServiceTest {
             .password("1234")
         .build();
 
-        UzikUser user = authService.signUp(signUp);
+        User user = authService.signUp(signUp);
 
         List<String> ingredients = new ArrayList<>();
         List<String> allergies = new ArrayList<>();

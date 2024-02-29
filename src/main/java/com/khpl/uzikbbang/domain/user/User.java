@@ -6,14 +6,16 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.khpl.uzikbbang.api.controller.auth.Session;
-import com.khpl.uzikbbang.api.controller.order.UzikOrder;
-import com.khpl.uzikbbang.domain.cart.CartItem;
+import com.khpl.uzikbbang.domain.Level;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,7 +25,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UzikUser {
+@Table(name = "Users")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,13 +37,7 @@ public class UzikUser {
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<CartItem> cartItems = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Session> sessions = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<UzikOrder> orders = new ArrayList<>();
 
     private String refreshToken;
 
@@ -48,13 +45,17 @@ public class UzikUser {
 
     private boolean useAt;
 
+    @Enumerated(EnumType.STRING)
+    private Level level;
+
     @Builder
-    public UzikUser(String name, String email, String password) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.registDt = LocalDateTime.now();
         this.useAt = true;
+        this.level = Level.BEGINNER;
     }
 
     public Session addSession() {
@@ -65,14 +66,6 @@ public class UzikUser {
         sessions.add(session);
 
         return session;
-    }
-
-    public UzikOrder addOrder() {
-        UzikOrder order = new UzikOrder(this);
-
-        orders.add(order);
-
-        return order;
     }
 
     public void setRefreshToken(String refreshToken) {

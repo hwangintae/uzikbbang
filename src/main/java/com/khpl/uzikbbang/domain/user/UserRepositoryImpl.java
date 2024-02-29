@@ -14,7 +14,7 @@ public class UserRepositoryImpl implements UserRepositoryDsl {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<UzikUser> getList(Page page) {
+    public List<User> getList(Page page) {
         return jpaQueryFactory.selectFrom(uzikUser)
             .limit(page.getSize())
             .offset(page.getOffset())

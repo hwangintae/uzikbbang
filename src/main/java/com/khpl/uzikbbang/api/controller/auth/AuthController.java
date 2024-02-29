@@ -19,7 +19,7 @@ import com.khpl.uzikbbang.api.controller.auth.response.SessionResponse;
 import com.khpl.uzikbbang.api.service.auth.AuthService;
 import com.khpl.uzikbbang.config.TokenParser;
 import com.khpl.uzikbbang.config.data.UserSession;
-import com.khpl.uzikbbang.domain.user.UzikUser;
+import com.khpl.uzikbbang.domain.user.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,7 +44,7 @@ public class AuthController {
     // [v] access token은 json으로 리턴한다.
     @PostMapping(value = "/signin")
     public ResponseEntity<SessionResponse> singIn(@RequestBody SignIn signIn) {
-        UzikUser user = authService.signIn(signIn);
+        User user = authService.signIn(signIn);
 
         String accessToken = authService.createAccessToken(user.getId());
         String refreshToken = authService.createRefreshToken(user.getId());
