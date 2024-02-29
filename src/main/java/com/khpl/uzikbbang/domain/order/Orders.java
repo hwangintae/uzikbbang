@@ -9,14 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "Orders")
-public class Order {
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -25,7 +25,8 @@ public class Order {
 
     private LocalDateTime createDt;
 
-    public Order(Long userId, Long productId) {
+    @Builder
+    public Orders(Long userId, Long productId) {
         this.userId = userId;
         this.productId = productId;
         this.createDt = LocalDateTime.now();

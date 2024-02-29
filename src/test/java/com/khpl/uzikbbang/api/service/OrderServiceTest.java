@@ -1,6 +1,6 @@
 package com.khpl.uzikbbang.api.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.khpl.uzikbbang.api.controller.Page;
 import com.khpl.uzikbbang.api.controller.auth.request.SignUp;
 import com.khpl.uzikbbang.api.controller.food.FoodCreate;
 import com.khpl.uzikbbang.api.service.auth.AuthService;
@@ -19,7 +18,8 @@ import com.khpl.uzikbbang.api.service.food.FoodService;
 import com.khpl.uzikbbang.api.service.order.OrderService;
 import com.khpl.uzikbbang.domain.food.Food;
 import com.khpl.uzikbbang.domain.food.FoodRepository;
-import com.khpl.uzikbbang.domain.order.OrderRepository;
+import com.khpl.uzikbbang.domain.order.Orders;
+import com.khpl.uzikbbang.domain.order.OrdersRepository;
 import com.khpl.uzikbbang.domain.user.User;
 import com.khpl.uzikbbang.domain.user.UserRepository;
 
@@ -39,7 +39,7 @@ public class OrderServiceTest {
     private FoodRepository foodRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private OrdersRepository orderRepository;
 
     @Autowired
     private OrderService orderService;
@@ -57,7 +57,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    @DisplayName("상품 바로 주문 테스트")
+    @DisplayName("음식을 주문하면 사용자 id와 상품 id가 저장된다.")
     void testOrderByProduct() {
         SignUp signUp = SignUp.builder()
             .name("황인태")
@@ -95,11 +95,15 @@ public class OrderServiceTest {
 
         Food food = foodService.add(foodCreate);
 
-        Page page = Page.builder().page(1).size(10).build();
+        Orders order = Orders.builder()
+                .userId(user.getId())
+                .productId(food.getId())
+                .build();
 
-        // List<UzikOrderProduct> orderProducts = orderService.getOrderProducts(page, user.getId());
-        
-        // assertEquals(1, orderProducts.size());
-        // assertEquals(100, orderProducts.get(0).getCnt());
+        Orders result = orderService.productOrder(order);
+
+        assertThat(result.getUserId()).isEqualTo(user.getId());
+        assertThat(result.getProductId()).isEqualTo(food.getId());
+
     }
 }
