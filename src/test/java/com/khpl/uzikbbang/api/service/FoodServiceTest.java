@@ -21,14 +21,14 @@ import com.khpl.uzikbbang.domain.food.FoodRepository;
 public class FoodServiceTest {
 
     @Autowired
-    private FoodService productService;
+    private FoodService foodService;
 
     @Autowired
-    private FoodRepository productRepository;
+    private FoodRepository foodRepository;
 
     @BeforeEach
     void clean() {
-        productRepository.deleteAll();
+        foodRepository.deleteAll();
     }
 
     @Test
@@ -40,7 +40,7 @@ public class FoodServiceTest {
         ingredients.add("우유");
         allergies.add("우유");
 
-        FoodCreate productCreate = FoodCreate.builder()
+        FoodCreate foodCreate = FoodCreate.builder()
                     .name("우직한빵")
                     .kind("마들렌")
                     .addr("대흥동")
@@ -60,9 +60,9 @@ public class FoodServiceTest {
                     .allergies(allergies)
                 .build();
 
-        Food product = productService.add(productCreate);
+        Food product = foodService.add(foodCreate);
         
-        Food result = productRepository.findById(product.getId()).get();
+        Food result = foodRepository.findById(product.getId()).get();
 
         assertEquals("우직한빵", result.getName());
         assertEquals(5000, result.getCost());
@@ -99,7 +99,7 @@ public class FoodServiceTest {
                     .allergies(allergies)
                 .build();
 
-        productRepository.save(product);
+        foodRepository.save(product);
 
         List<String> newIngredients = new ArrayList<>();
         List<String> newAllergies = new ArrayList<>();
@@ -128,9 +128,9 @@ public class FoodServiceTest {
             .useAt(false)
         .build();
         
-        productService.edit(product.getId(), edit);
+        foodService.edit(product.getId(), edit);
         
-        Food result = productRepository.findById(product.getId()).get();
+        Food result = foodRepository.findById(product.getId()).get();
 
         assertEquals("땅콩크림빵", result.getName());
         assertEquals(5_000_000 * 3, result.getPrice());
