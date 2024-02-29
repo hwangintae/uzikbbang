@@ -20,7 +20,6 @@ public class Whisky {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long menuId;
     private String country;
     private String region;
     private String distillery;
@@ -29,8 +28,7 @@ public class Whisky {
     private Level level;
 
     @Builder
-    public Whisky(Long menuId, String country, String region, String distillery, int age, String style, Level level) {
-        this.menuId = menuId;
+    public Whisky(String country, String region, String distillery, int age, String style, Level level) {
         this.country = country;
         this.region = region;
         this.distillery = distillery;

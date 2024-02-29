@@ -41,7 +41,6 @@ public class WhiskyEdit {
 
     public WhiskyServiceEdit toServiceEdit(Long menuId) {
         return WhiskyServiceEdit.builder()
-                .menuId(menuId)
                 .country(this.country)
                 .region(this.region)
                 .distillery(this.distillery)
