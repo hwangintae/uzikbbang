@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.service;
+package com.khpl.uzikbbang.api.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,20 +11,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.khpl.uzikbbang.api.controller.product.ProductCreate;
-import com.khpl.uzikbbang.api.controller.product.ProductEdit;
-import com.khpl.uzikbbang.api.service.product.ProductService;
-import com.khpl.uzikbbang.domain.product.Product;
-import com.khpl.uzikbbang.domain.product.ProductRepository;
+import com.khpl.uzikbbang.api.controller.food.FoodCreate;
+import com.khpl.uzikbbang.api.controller.food.FoodEdit;
+import com.khpl.uzikbbang.api.service.food.FoodService;
+import com.khpl.uzikbbang.domain.food.Food;
+import com.khpl.uzikbbang.domain.food.FoodRepository;
 
 @SpringBootTest
-public class ProductServiceTest {
+public class FoodServiceTest {
 
     @Autowired
-    private ProductService productService;
+    private FoodService productService;
 
     @Autowired
-    private ProductRepository productRepository;
+    private FoodRepository productRepository;
 
     @BeforeEach
     void clean() {
@@ -40,7 +40,7 @@ public class ProductServiceTest {
         ingredients.add("우유");
         allergies.add("우유");
 
-        ProductCreate productCreate = ProductCreate.builder()
+        FoodCreate productCreate = FoodCreate.builder()
                     .name("우직한빵")
                     .kind("마들렌")
                     .addr("대흥동")
@@ -60,9 +60,9 @@ public class ProductServiceTest {
                     .allergies(allergies)
                 .build();
 
-        Product product = productService.add(productCreate);
+        Food product = productService.add(productCreate);
         
-        Product result = productRepository.findById(product.getId()).get();
+        Food result = productRepository.findById(product.getId()).get();
 
         assertEquals("우직한빵", result.getName());
         assertEquals(5000, result.getCost());
@@ -79,7 +79,7 @@ public class ProductServiceTest {
         ingredients.add("우유");
         allergies.add("우유");
 
-        Product product = Product.builder()
+        Food product = Food.builder()
                     .name("우직한빵")
                     .kind("마들렌")
                     .addr("대흥동")
@@ -107,7 +107,7 @@ public class ProductServiceTest {
         newIngredients.add("땅콩");
         newAllergies.add("땅콩");
 
-        ProductEdit edit = ProductEdit.builder()
+        FoodEdit edit = FoodEdit.builder()
             .name("땅콩크림빵")
             .kind("빵")
             .addr("관악구")
@@ -130,7 +130,7 @@ public class ProductServiceTest {
         
         productService.edit(product.getId(), edit);
         
-        Product result = productRepository.findById(product.getId()).get();
+        Food result = productRepository.findById(product.getId()).get();
 
         assertEquals("땅콩크림빵", result.getName());
         assertEquals(5_000_000 * 3, result.getPrice());

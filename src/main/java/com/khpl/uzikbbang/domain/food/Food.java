@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.domain.product;
+package com.khpl.uzikbbang.domain.food;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.khpl.uzikbbang.api.service.product.ProductEditor;
+import com.khpl.uzikbbang.api.service.food.FoodEditor;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Product {
+public class Food {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +47,7 @@ public class Product {
     private boolean useAt;
 
     @Builder
-    public Product(String name, String kind, String addr, int exprirationDate, int cost, Double wight, Double calories, Double sodium, Double totalCarbo, Double sugars, Double totalFat, Double transFat, Double saturatedFat, Double cholesterol, Double protein, List<String> ingredients, List<String> allergies) {
+    public Food(String name, String kind, String addr, int exprirationDate, int cost, Double wight, Double calories, Double sodium, Double totalCarbo, Double sugars, Double totalFat, Double transFat, Double saturatedFat, Double cholesterol, Double protein, List<String> ingredients, List<String> allergies) {
         this.name = name;
         this.kind = kind;
         this.addr = addr;
@@ -70,8 +70,8 @@ public class Product {
         this.useAt = true;
     }
 
-    public ProductEditor.ProductEditorBuilder toEdit() {
-        return ProductEditor.builder()
+    public FoodEditor.FoodEditorBuilder toEdit() {
+        return FoodEditor.builder()
             .name(this.name)
             .kind(this.kind)
             .addr(this.addr)
@@ -92,7 +92,7 @@ public class Product {
             .useAt(this.useAt);
     }
 
-    public void edit(ProductEditor editor) {
+    public void edit(FoodEditor editor) {
         this.name = editor.getName();
         this.kind = editor.getKind();
         this.addr = editor.getAddr();

@@ -1,11 +1,11 @@
-package com.khpl.uzikbbang.api.controller.product;
+package com.khpl.uzikbbang.api.controller.food;
 
-import com.khpl.uzikbbang.domain.product.Product;
+import com.khpl.uzikbbang.domain.food.Food;
 
 import lombok.Getter;
 
 @Getter
-public class ProductResponse {
+public class FoodResponse {
     private String name;
     private String kind;
     private String addr;
@@ -29,7 +29,7 @@ public class ProductResponse {
 
     private String allergies;
 
-    public ProductResponse(Product product) {
+    public FoodResponse(Food product) {
         this.name = product.getName();
         this.kind = product.getKind();
         this.addr = product.getAddr();

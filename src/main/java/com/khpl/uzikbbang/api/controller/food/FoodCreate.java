@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.api.controller.product;
+package com.khpl.uzikbbang.api.controller.food;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductEdit {
+public class FoodCreate {
     private String name;
     private String kind;
     private String addr;
@@ -29,10 +29,9 @@ public class ProductEdit {
     private Double protein;
     private List<String> ingredients;
     private List<String> allergies;
-    private Boolean useAt;
 
     @Builder
-    public ProductEdit(String name, String kind, String addr, int exprirationDate, int cost, Double wight, Double calories, Double sodium, Double totalCarbo, Double sugars, Double totalFat, Double transFat, Double saturatedFat, Double cholesterol, Double protein, List<String> ingredients, List<String> allergies, Boolean useAt) {
+    public FoodCreate(String name, String kind, String addr, int exprirationDate, int cost, Double wight, Double calories, Double sodium, Double totalCarbo, Double sugars, Double totalFat, Double transFat, Double saturatedFat, Double cholesterol, Double protein, List<String> ingredients, List<String> allergies) {
         this.name = name;
         this.kind = kind;
         this.addr = addr;
@@ -50,6 +49,5 @@ public class ProductEdit {
         this.protein = protein;
         this.ingredients = ingredients;
         this.allergies = allergies;
-        this.useAt = useAt;
     }
 }

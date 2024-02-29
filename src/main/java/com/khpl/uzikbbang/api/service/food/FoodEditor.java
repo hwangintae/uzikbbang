@@ -1,10 +1,10 @@
-package com.khpl.uzikbbang.api.service.product;
+package com.khpl.uzikbbang.api.service.food;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ProductEditor {
+public class FoodEditor {
     private String name;
     private String kind;
     private String addr;
@@ -25,7 +25,7 @@ public class ProductEditor {
     private boolean useAt;
 
     @Builder
-    public ProductEditor(String name, String kind, String addr, int exprirationDate, int cost, Double wight, Double calories, Double sodium, Double totalCarbo, Double sugars, Double totalFat, Double transFat, Double saturatedFat, Double cholesterol, Double protein, String ingredients, String allergies, Boolean useAt) {
+    public FoodEditor(String name, String kind, String addr, int exprirationDate, int cost, Double wight, Double calories, Double sodium, Double totalCarbo, Double sugars, Double totalFat, Double transFat, Double saturatedFat, Double cholesterol, Double protein, String ingredients, String allergies, Boolean useAt) {
         this.name = name;
         this.kind = kind;
         this.addr = addr;

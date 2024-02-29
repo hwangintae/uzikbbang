@@ -1,4 +1,4 @@
-package com.khpl.uzikbbang.domain.product;
+package com.khpl.uzikbbang.domain.food;
 
 import static com.khpl.uzikbbang.domain.product.QProduct.product;
 
@@ -10,11 +10,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ProductRepositoryImpl implements ProductRepositoryDsl {
+public class FoodRepositoryImpl implements FoodRepositoryDsl {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Product> getList(Page page) {
+    public List<Food> getList(Page page) {
         return jpaQueryFactory.selectFrom(product)
                             .limit(page.getSize())
                             .offset(page.getOffset())
