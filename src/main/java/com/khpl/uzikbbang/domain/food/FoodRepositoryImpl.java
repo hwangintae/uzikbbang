@@ -1,6 +1,6 @@
 package com.khpl.uzikbbang.domain.food;
 
-import static com.khpl.uzikbbang.domain.product.QFood.food;
+import static com.khpl.uzikbbang.domain.food.QFood.food;
 
 import java.util.List;
 
