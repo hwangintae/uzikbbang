@@ -11,16 +11,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.khpl.uzikbbang.dto.UzikOrderProduct;
-import com.khpl.uzikbbang.entity.Product;
-import com.khpl.uzikbbang.entity.UzikUser;
-import com.khpl.uzikbbang.repository.OrderProductRepository;
-import com.khpl.uzikbbang.repository.OrderRepository;
-import com.khpl.uzikbbang.repository.ProductRepository;
-import com.khpl.uzikbbang.repository.UserRepository;
-import com.khpl.uzikbbang.request.Page;
-import com.khpl.uzikbbang.request.ProductCreate;
-import com.khpl.uzikbbang.request.SignUp;
+import com.khpl.uzikbbang.api.controller.Page;
+import com.khpl.uzikbbang.api.controller.auth.request.SignUp;
+import com.khpl.uzikbbang.api.controller.order.UzikOrderProduct;
+import com.khpl.uzikbbang.api.controller.product.ProductCreate;
+import com.khpl.uzikbbang.api.service.auth.AuthService;
+import com.khpl.uzikbbang.api.service.cart.CartItemService;
+import com.khpl.uzikbbang.api.service.order.OrderService;
+import com.khpl.uzikbbang.api.service.product.ProductService;
+import com.khpl.uzikbbang.domain.order.OrderProductRepository;
+import com.khpl.uzikbbang.domain.order.OrderRepository;
+import com.khpl.uzikbbang.domain.product.Product;
+import com.khpl.uzikbbang.domain.product.ProductRepository;
+import com.khpl.uzikbbang.domain.user.UserRepository;
+import com.khpl.uzikbbang.domain.user.UzikUser;
 
 @SpringBootTest
 public class OrderServiceTest {

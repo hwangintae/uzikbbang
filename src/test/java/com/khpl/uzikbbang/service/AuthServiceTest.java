@@ -15,14 +15,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.khpl.uzikbbang.api.controller.auth.Session;
+import com.khpl.uzikbbang.api.controller.auth.request.SignIn;
+import com.khpl.uzikbbang.api.controller.auth.request.SignOut;
+import com.khpl.uzikbbang.api.controller.auth.request.SignUp;
+import com.khpl.uzikbbang.api.service.auth.AuthService;
+import com.khpl.uzikbbang.api.service.auth.UserService;
 import com.khpl.uzikbbang.config.crypto.PasswordEncoder;
-import com.khpl.uzikbbang.dto.Session;
-import com.khpl.uzikbbang.entity.UzikUser;
+import com.khpl.uzikbbang.domain.user.UserRepository;
+import com.khpl.uzikbbang.domain.user.UzikUser;
 import com.khpl.uzikbbang.exception.InvalidSignInException;
-import com.khpl.uzikbbang.repository.UserRepository;
-import com.khpl.uzikbbang.request.SignIn;
-import com.khpl.uzikbbang.request.SignOut;
-import com.khpl.uzikbbang.request.SignUp;
 
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;

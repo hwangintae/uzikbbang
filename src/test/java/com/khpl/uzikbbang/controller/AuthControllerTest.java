@@ -20,10 +20,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.khpl.uzikbbang.repository.UserRepository;
-import com.khpl.uzikbbang.request.SignIn;
-import com.khpl.uzikbbang.request.SignUp;
-import com.khpl.uzikbbang.service.AuthService;
+import com.khpl.uzikbbang.api.controller.auth.request.SignIn;
+import com.khpl.uzikbbang.api.controller.auth.request.SignUp;
+import com.khpl.uzikbbang.api.service.auth.AuthService;
+import com.khpl.uzikbbang.domain.user.UserRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc

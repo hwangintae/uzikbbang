@@ -1,5 +1,7 @@
 package com.khpl.uzikbbang.api.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,15 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.khpl.uzikbbang.api.controller.menu.MenuEdit;
 import com.khpl.uzikbbang.api.controller.whisky.WhiskyEdit;
+import com.khpl.uzikbbang.api.service.menu.MenuService;
 import com.khpl.uzikbbang.api.service.whisky.WhiskyService;
-import com.khpl.uzikbbang.api.service.whisky.request.WhiskyServiceEdit;
 import com.khpl.uzikbbang.domain.menu.MenuRepository;
 import com.khpl.uzikbbang.domain.whisky.Whisky;
-import com.khpl.uzikbbang.dto.MenuEdit;
-import com.khpl.uzikbbang.service.MenuService;
-
-import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 public class MenuServiceTest {

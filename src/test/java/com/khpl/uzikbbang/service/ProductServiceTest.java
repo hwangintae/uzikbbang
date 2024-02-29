@@ -11,10 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.khpl.uzikbbang.entity.Product;
-import com.khpl.uzikbbang.repository.ProductRepository;
-import com.khpl.uzikbbang.request.ProductCreate;
-import com.khpl.uzikbbang.request.ProductEdit;
+import com.khpl.uzikbbang.api.controller.product.ProductCreate;
+import com.khpl.uzikbbang.api.controller.product.ProductEdit;
+import com.khpl.uzikbbang.api.service.product.ProductService;
+import com.khpl.uzikbbang.domain.product.Product;
+import com.khpl.uzikbbang.domain.product.ProductRepository;
 
 @SpringBootTest
 public class ProductServiceTest {

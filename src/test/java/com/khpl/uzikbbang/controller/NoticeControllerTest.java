@@ -21,10 +21,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.khpl.uzikbbang.entity.Notice;
-import com.khpl.uzikbbang.repository.NoticeRepository;
-import com.khpl.uzikbbang.request.NoticeCreate;
-import com.khpl.uzikbbang.request.NoticeEdit;
+import com.khpl.uzikbbang.api.controller.notice.request.NoticeCreate;
+import com.khpl.uzikbbang.api.controller.notice.request.NoticeEdit;
+import com.khpl.uzikbbang.domain.notice.Notice;
+import com.khpl.uzikbbang.domain.notice.NoticeRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
